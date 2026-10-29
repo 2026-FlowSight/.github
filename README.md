@@ -15,63 +15,75 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 <summary><h2>R&D Tasky (Klikni pre rozbalenie)</h2></summary>
 
 ### 01 - Klasifikácia značky a modelu auta (EU)
+**Popis:** Cieľom je zistiť, aké sú dostupné metódy na rozpoznanie značky (napr. Škoda, VW) a modelu európskeho auta z výrezu kamery, a overiť, či niektorý z modelov dosahuje použiteľnú presnosť na našich dátach. Výstupom je odporúčanie, ktorý prístup má zmysel ďalej rozvíjať.
 - [ ] Preštudované papers o európskych autách
 - [ ] Vyskúšané aspoň 2 modely
 - [ ] Otestované na našich výrezoch
 - [ ] Napísaný report a odprezentované
 
 ### 02 - Multi-view ReID a duplikáty
+**Popis:** Ide o to, aby systém rozpoznal to isté auto z rôznych kamier (multi-view) a zároveň vedel rozlíšiť, kedy ide o duplikát v Qdrante. Cieľom je navrhnúť spôsob agregácie embeddingov (napr. max-pooling alebo priemerovanie) a štruktúru kolekcie v Qdrante tak, aby vyhľadávanie bolo presné a rýchle.
 - [ ] Preštudované papers o multi-view ReID
 - [ ] Vyskúšaný Max-pooling alebo priemerovanie
 - [ ] Navrhnutá štruktúra pre Qdrant
 - [ ] Otestované na videách s prekryvom
 
 ### 03 - Ukladanie a agregácia dát (1TB limit)
+**Popis:** Systém bude ukladať veľké množstvo metadát a embeddingov, pričom disk je limitovaný na 1 TB. Úlohou je preskúmať stratégie ukladania časových radov a agregácie v Qdrante, navrhnúť dátový model a vypočítať, koľko miesta zaberie prevádzka za rozumné obdobie.
 - [ ] Preštudované stratégie pre time-series a Qdrant
 - [ ] Navrhnutý dátový model
 - [ ] Vypočítané odhady spotreby disku
 
 ### 04 - YOLO v noci a daždi
+**Popis:** Štandardné YOLO modely výrazne strácajú presnosť pri slabom osvetlení a daždi. Cieľom je preskúmať metódy predspracovania (napr. gama korekcia, Wienerov filter) a overiť, ktoré z nich reálne zlepšia detekciu na našich nočných a daždivých videách, vrátane merania výpočtovej náročnosti.
 - [ ] Preštudované papers o low-light detekcii
 - [ ] Vyskúšané aspoň 2 metódy (napr. gama + Wiener)
 - [ ] Zmeraná časová náročnosť
 - [ ] Odporúčanie, čo použiť
 
 ### 05 - Klasifikátor farieb a features
+**Popis:** Pre vyhľadávanie áut podľa farby je potrebné spoľahlivo určiť farbu z výrezu. Úlohou je preskúmať metódy rozpoznávania farieb, vyskúšať HSV analýzu a prípadne CNN, a navrhnúť sadu kategórií farieb, ktoré budú pre používateľov zmysluplné a zároveň dobre rozlíšiteľné.
 - [ ] Preštudované metódy pre rozpoznávanie farieb
 - [ ] Vyskúšaná HSV analýza a prípadne CNN
 - [ ] Navrhnuté kategórie farieb
 
 ### 06 - Príprava na Axis integráciu (ŠPZ)
+**Popis:** Cieľom je pripraviť sa na napojenie na Axis LPR (rozpoznávanie ŠPZ) tak, aby systém vedel prijímať dáta o poznávacích značkách. Úlohou je preštudovať dokumentáciu, navrhnúť API endpoint a pripraviť mock JSON, na ktorom sa dá integrovať ešte pred dodaním reálnej kamery.
 - [ ] Preštudovaná dokumentácia Axis LPR
 - [ ] Navrhnutý API endpoint
 - [ ] Vytvorený mock JSON
 
 ### 07 - Príprava na detekciu presetov (PTZ)
+**Popis:** PTZ kamery sa otáčajú medzi presetmi a systém musí vedieť, v akom režime práve snímajú. Cieľom je preskúmať VAPIX API a navrhnúť architektúru, ktorá umožní zisťovať a spravovať aktuálny preset kamery.
 - [ ] Preštudované VAPIX API
 - [ ] Navrhnutá architektúra pre správu presetov
 
 ### 08 - Počítanie obsadenosti parkovísk
+**Popis:** Mesto chce vedieť, ako sú parkoviská obsadené. Úlohou je preskúmať metódy počítania áut na parkovisku, vyskúšať ich na videu z reálneho parkoviska a napísať report s dosiahnutou presnosťou, aby bolo jasné, či je výsledok použiteľný v praxi.
 - [ ] Preštudované metódy pre počítanie
 - [ ] Vyskúšané na videu z parkoviska
 - [ ] Napísaný report s presnosťou
 
 ### 09 - Detekcia nehôd a podozrivého správania
+**Popis:** Cieľom je navrhnúť pravidlá, ktoré dokážu z tracking dát odhaliť nehodu alebo podozrivé správanie (napr. náhle zastavenie, nezvyčajný pohyb). Úlohou je preskúmať existujúce metódy, navrhnúť konkrétne pravidlá a otestovať ich na videu.
 - [ ] Preštudované metódy pre detekciu nehôd
 - [ ] Navrhnuté pravidlá
 - [ ] Otestované na videu
 
 ### 10 - Rozlíšenie áut s rovnakým modelom a farbou
+**Popis:** Dve autá rovnakej značky, modelu a farby môžu vyzerať takmer identicky. Úlohou je preskúmať metódy, ktoré ich dokážu odlíšiť (napr. detaily ako kolesá, nálepky, poškodenia) a navrhnúť, ktoré možnosti majú reálny zmysel nasadiť.
 - [ ] Preštudované metódy
 - [ ] Navrhnuté možnosti
 - [ ] Odporúčanie, čo má zmysel
 
 ### 11 - Časová a priestorová kauzalita
+**Popis:** Ak ReID zlyhá, auto sa dá stále spojiť podľa toho, kedy a kde sa objavilo — musí to však dávať fyzikálny zmysel (nemožno byť na dvoch miestach naraz). Cieľom je preskúmať metódy, navrhnúť graf prechodov medzi kamerami a implementovať funkciu, ktorá takéto spojenie overí.
 - [ ] Preštudované metódy
 - [ ] Navrhnutý graf prechodov
 - [ ] Implementovaná funkcia
 
 ### 12 - Detekcia ohňa a dymu
+**Popis:** Cieľom je overiť, či existujúci alebo dostupný model dokáže spoľahlivo detegovať oheň a dym na mestských kamerách, a to aj s ohľadom na falošné poplachy (západ slnka, červené svetlá). Úlohou je preskúmať papers, vyskúšať aspoň jeden model, otestovať ho na videu vrátane negatívnych príkladov, zmerať výpočtovú náročnosť a napísať report.
 - [ ] Preštudované papers o detekcii ohňa
 - [ ] Vyskúšaný aspoň 1 model
 - [ ] Otestované na videu + negatívne príklady

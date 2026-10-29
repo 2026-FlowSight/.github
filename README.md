@@ -90,6 +90,14 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 - [ ] Zmeraná výpočtová náročnosť
 - [ ] Napísaný report
 
+### 13 - High-Level Architecture Diagram
+**Popis:** Cieľom je vytvoriť vysokúrovňový blokový diagram systému FlowSight, ktorý zobrazí hlavné komponenty a tok dát. Diagram slúži ako mapa pre tím (R&D aj DEV), aby všetci videli, ako do seba zapadá vstup z kamier, spracovanie (YOLO, ReID), ukladanie (Qdrant) a výstup (Dashboard, Mapa). Musí obsahovať aj vetvu pre Axis LPR a hardvérovú vrstvu (Jetson, Server). Výstupom je obrázok alebo Mermaid kód v `/docs/architecture/`.
+- [ ] Navrhnutá štruktúra blokov (Kamery, YOLO, ReID, Qdrant, Dashboard)
+- [ ] Zakreslené toky dát (šípky)
+- [ ] Oddelená vetva pre Axis LPR a hardvér
+- [ ] Diagram uložený v `/docs/architecture/`
+- [ ] Odprezentované na tímovom stretnutí
+
 </details>
 
 ---

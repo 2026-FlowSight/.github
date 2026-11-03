@@ -1,0 +1,29 @@
+{
+ "video": "SYNTH_static_fire_poster_roundabout.mp4",
+ "mode": {
+  "device": "mps",
+  "stride": 2,
+  "proc_fps": 7.5,
+  "conf": 0.4,
+  "window_s": 3.0,
+  "window_frames": 22,
+  "min_hits": 11,
+  "min_motion": 6.0,
+  "motion_gap_s": 1.0,
+  "hold_s": 5.0,
+  "imgsz": 512
+ },
+ "duration_s": 60.0,
+ "processed_frames": 450,
+ "raw_detection_rate": 1.0,
+ "confirmed_rate": 0.0,
+ "alarm_rate": 0.0,
+ "alarm_events": 0,
+ "first_raw_detection_s": 0.0,
+ "first_alarm_s": null,
+ "alarm_latency_s": null,
+ "infer_ms_median": 9.12,
+ "infer_ms_p95": 9.89,
+ "verify_ms_median": 0.07,
+ "verify_ms_p95": 0.079
+}

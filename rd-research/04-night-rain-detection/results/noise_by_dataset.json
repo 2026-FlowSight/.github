@@ -1,0 +1,58 @@
+{
+ "detrac_day": {
+  "images": 29,
+  "brightness_median": 114.2,
+  "noise_sigma_median": 1.45,
+  "noise_sigma_p95": 1.81,
+  "share_above_auto_threshold": 0.0
+ },
+ "synth_dusk": {
+  "images": 29,
+  "brightness_median": 77.9,
+  "noise_sigma_median": 8.3,
+  "noise_sigma_p95": 9.27,
+  "share_above_auto_threshold": 1.0
+ },
+ "synth_dark": {
+  "images": 29,
+  "brightness_median": 55.2,
+  "noise_sigma_median": 13.23,
+  "noise_sigma_p95": 15.52,
+  "share_above_auto_threshold": 1.0
+ },
+ "synth_very_dark": {
+  "images": 29,
+  "brightness_median": 39.8,
+  "noise_sigma_median": 18.89,
+  "noise_sigma_p95": 20.72,
+  "share_above_auto_threshold": 1.0
+ },
+ "detrac_night": {
+  "images": 37,
+  "brightness_median": 90.9,
+  "noise_sigma_median": 0.74,
+  "noise_sigma_p95": 2.08,
+  "share_above_auto_threshold": 0.0
+ },
+ "detrac_rain": {
+  "images": 32,
+  "brightness_median": 120.2,
+  "noise_sigma_median": 0.74,
+  "noise_sigma_p95": 1.71,
+  "share_above_auto_threshold": 0.0
+ },
+ "exdark": {
+  "images": 734,
+  "brightness_median": 31.8,
+  "noise_sigma_median": 0.66,
+  "noise_sigma_p95": 2.59,
+  "share_above_auto_threshold": 0.01
+ },
+ "repo_night_video": {
+  "images": 2181,
+  "brightness_median": 10.7,
+  "noise_sigma_median": 0.36,
+  "noise_sigma_p95": 0.65,
+  "share_above_auto_threshold": 0.0
+ }
+}

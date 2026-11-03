@@ -1,0 +1,28 @@
+{
+ "video": "Chimney_smoke.ogv",
+ "mode": {
+  "stride": 12,
+  "proc_fps": 2.08,
+  "conf": 0.4,
+  "window_s": 3.0,
+  "window_frames": 6,
+  "min_hits": 3,
+  "min_motion": 6.0,
+  "motion_gap_s": 1.0,
+  "hold_s": 0.0,
+  "imgsz": 512
+ },
+ "duration_s": 10.6,
+ "processed_frames": 23,
+ "raw_detection_rate": 0.913,
+ "confirmed_rate": 0.783,
+ "alarm_rate": 0.783,
+ "alarm_events": 1,
+ "first_raw_detection_s": 0.48,
+ "first_alarm_s": 2.4,
+ "alarm_latency_s": 1.92,
+ "infer_ms_median": 38.67,
+ "infer_ms_p95": 40.58,
+ "verify_ms_median": 0.162,
+ "verify_ms_p95": 0.223
+}

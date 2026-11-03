@@ -1,0 +1,10 @@
+# dáta a veľké výstupy nepatria do gitu (pravidlo tímu + licencie datasetov)
+data/
+runs/
+*.mp4
+*.webm
+*.engine
+*.onnx
+*.pt
+*.pth
+__pycache__/

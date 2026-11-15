@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Multi-View Vehicle Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #1e1e1e; color: #fff; margin: 0; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: #2d2d2d; border-radius: 10px; overflow: hidden; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .card:hover { transform: scale(1.02); }
+        .card img { width: 100%; height: 220px; object-fit: cover; display: block; }
+        .info { padding: 15px; }
+        .badge { background: #007bff; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-size: 14px; }
+        .meta { font-size: 13px; color: #aaa; margin-top: 10px; }
+
+        /* Lightbox */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; }
+        .modal.active { display: flex; }
+
+        .modal-content { position: relative; width: 90%; max-width: 1200px; }
+        .main-image { width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px; background: #000; }
+
+        .thumbnails { display: flex; gap: 10px; margin-top: 20px; justify-content: center; overflow-x: auto; }
+        .thumb { width: 120px; height: 90px; object-fit: cover; border-radius: 6px; cursor: pointer; opacity: 0.5; border: 3px solid transparent; transition: 0.2s; }
+        .thumb:hover, .thumb.active { opacity: 1; border-color: #007bff; transform: scale(1.05); }
+
+        .close-btn { position: absolute; top: -40px; right: 0; color: white; font-size: 40px; cursor: pointer; }
+        .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); color: white; border: none; padding: 20px; font-size: 30px; cursor: pointer; border-radius: 50%; }
+        .nav-btn:hover { background: rgba(255,255,255,0.5); }
+        .prev { left: -60px; }
+        .next { right: -60px; }
+
+        .title { text-align: center; margin-top: 15px; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Detekované vozidlá</h1>
+    <div class="grid" id="grid"></div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <img src="" class="main-image" id="modal-img">
+            <button class="nav-btn prev" onclick="prevImage()">&#10094;</button>
+            <button class="nav-btn next" onclick="nextImage()">&#10095;</button>
+            <div class="title" id="modal-title"></div>
+            <div class="thumbnails" id="modal-thumbs"></div>
+        </div>
+    </div>
+
+    <script>
+        const vehicles = [{"id": "0f70b0a9", "full_id": "0f70b0a9-8b04-4e8e-a161-4f4832304ecb", "best_frame": "frames/0f70b0a9-8b04-4e8e-a161-4f4832304ecb_best.jpg", "timestamp": "23:01:16", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/0f70b0a9-8b04-4e8e-a161-4f4832304ecb_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/0f70b0a9-8b04-4e8e-a161-4f4832304ecb_best.jpg"}]}, {"id": "ff2ae6dd", "full_id": "ff2ae6dd-d9ef-4cfc-8340-927aaee62175", "best_frame": "frames/ff2ae6dd-d9ef-4cfc-8340-927aaee62175_best.jpg", "timestamp": "23:01:49", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/ff2ae6dd-d9ef-4cfc-8340-927aaee62175_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/ff2ae6dd-d9ef-4cfc-8340-927aaee62175_best.jpg"}, {"slot": "exit", "reid_crop_path": "crops/ff2ae6dd-d9ef-4cfc-8340-927aaee62175_exit.jpg"}]}, {"id": "f002fca2", "full_id": "f002fca2-dc03-4960-bfff-655fbfb5d166", "best_frame": "frames/f002fca2-dc03-4960-bfff-655fbfb5d166_best.jpg", "timestamp": "21:17:34", "camera": "demo_cam", "views": [{"slot": "angle_1", "reid_crop_path": "crops/f002fca2-dc03-4960-bfff-655fbfb5d166_angle_1.jpg"}, {"slot": "best", "reid_crop_path": "crops/f002fca2-dc03-4960-bfff-655fbfb5d166_best.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/f002fca2-dc03-4960-bfff-655fbfb5d166_angle_2.jpg"}, {"slot": "angle_3", "reid_crop_path": "crops/f002fca2-dc03-4960-bfff-655fbfb5d166_angle_3.jpg"}, {"slot": "first", "reid_crop_path": "crops/f002fca2-dc03-4960-bfff-655fbfb5d166_first.jpg"}]}, {"id": "2210f520", "full_id": "2210f520-0d34-44cf-b19d-c48559329cfc", "best_frame": "frames/2210f520-0d34-44cf-b19d-c48559329cfc_best.jpg", "timestamp": "23:01:37", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/2210f520-0d34-44cf-b19d-c48559329cfc_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/2210f520-0d34-44cf-b19d-c48559329cfc_best.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/2210f520-0d34-44cf-b19d-c48559329cfc_angle_1.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/2210f520-0d34-44cf-b19d-c48559329cfc_angle_2.jpg"}]}, {"id": "3821dea1", "full_id": "3821dea1-5cf4-46c0-bd3c-725cf18c2e6a", "best_frame": "frames/3821dea1-5cf4-46c0-bd3c-725cf18c2e6a_best.jpg", "timestamp": "23:01:25", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/3821dea1-5cf4-46c0-bd3c-725cf18c2e6a_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/3821dea1-5cf4-46c0-bd3c-725cf18c2e6a_best.jpg"}]}, {"id": "e35bb166", "full_id": "e35bb166-dcb2-4617-9ded-2d8fa4287256", "best_frame": "frames/e35bb166-dcb2-4617-9ded-2d8fa4287256_best.jpg", "timestamp": "23:01:17", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/e35bb166-dcb2-4617-9ded-2d8fa4287256_first.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/e35bb166-dcb2-4617-9ded-2d8fa4287256_angle_1.jpg"}, {"slot": "best", "reid_crop_path": "crops/e35bb166-dcb2-4617-9ded-2d8fa4287256_best.jpg"}]}, {"id": "0fe13e9f", "full_id": "0fe13e9f-66ed-4bd6-8c13-093233608c91", "best_frame": "frames/0fe13e9f-66ed-4bd6-8c13-093233608c91_best.jpg", "timestamp": "23:01:59", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/0fe13e9f-66ed-4bd6-8c13-093233608c91_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/0fe13e9f-66ed-4bd6-8c13-093233608c91_best.jpg"}]}, {"id": "2b6f981e", "full_id": "2b6f981e-2f70-41cc-aced-220b4a266048", "best_frame": "frames/2b6f981e-2f70-41cc-aced-220b4a266048_best.jpg", "timestamp": "23:01:31", "camera": "demo_cam", "views": [{"slot": "exit", "reid_crop_path": "crops/2b6f981e-2f70-41cc-aced-220b4a266048_exit.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/2b6f981e-2f70-41cc-aced-220b4a266048_angle_1.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/2b6f981e-2f70-41cc-aced-220b4a266048_angle_2.jpg"}, {"slot": "angle_3", "reid_crop_path": "crops/2b6f981e-2f70-41cc-aced-220b4a266048_angle_3.jpg"}, {"slot": "best", "reid_crop_path": "crops/2b6f981e-2f70-41cc-aced-220b4a266048_best.jpg"}, {"slot": "first", "reid_crop_path": "crops/2b6f981e-2f70-41cc-aced-220b4a266048_first.jpg"}]}, {"id": "9dbaac5e", "full_id": "9dbaac5e-f4b7-443f-bf79-57b33b16451c", "best_frame": "frames/9dbaac5e-f4b7-443f-bf79-57b33b16451c_best.jpg", "timestamp": "23:02:01", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/9dbaac5e-f4b7-443f-bf79-57b33b16451c_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/9dbaac5e-f4b7-443f-bf79-57b33b16451c_best.jpg"}]}, {"id": "186c3b80", "full_id": "186c3b80-fa96-4e02-8a25-fa64b97170a2", "best_frame": "frames/186c3b80-fa96-4e02-8a25-fa64b97170a2_best.jpg", "timestamp": "23:01:40", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/186c3b80-fa96-4e02-8a25-fa64b97170a2_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/186c3b80-fa96-4e02-8a25-fa64b97170a2_best.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/186c3b80-fa96-4e02-8a25-fa64b97170a2_angle_1.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/186c3b80-fa96-4e02-8a25-fa64b97170a2_angle_2.jpg"}]}, {"id": "324dbcc3", "full_id": "324dbcc3-98a0-4519-942a-b73e1cfc5e0e", "best_frame": "frames/324dbcc3-98a0-4519-942a-b73e1cfc5e0e_best.jpg", "timestamp": "21:17:16", "camera": "demo_cam", "views": [{"slot": "best", "reid_crop_path": "crops/324dbcc3-98a0-4519-942a-b73e1cfc5e0e_best.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/324dbcc3-98a0-4519-942a-b73e1cfc5e0e_angle_1.jpg"}, {"slot": "first", "reid_crop_path": "crops/324dbcc3-98a0-4519-942a-b73e1cfc5e0e_first.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/324dbcc3-98a0-4519-942a-b73e1cfc5e0e_angle_2.jpg"}]}, {"id": "3f3c1f09", "full_id": "3f3c1f09-cc6f-422c-9102-f074062fc768", "best_frame": "frames/3f3c1f09-cc6f-422c-9102-f074062fc768_best.jpg", "timestamp": "21:17:45", "camera": "demo_cam", "views": [{"slot": "best", "reid_crop_path": "crops/3f3c1f09-cc6f-422c-9102-f074062fc768_best.jpg"}, {"slot": "first", "reid_crop_path": "crops/3f3c1f09-cc6f-422c-9102-f074062fc768_first.jpg"}, {"slot": "exit", "reid_crop_path": "crops/3f3c1f09-cc6f-422c-9102-f074062fc768_exit.jpg"}]}, {"id": "d29feb0c", "full_id": "d29feb0c-25c8-4bcf-a343-d25a7ba15f1d", "best_frame": "frames/d29feb0c-25c8-4bcf-a343-d25a7ba15f1d_best.jpg", "timestamp": "23:01:27", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/d29feb0c-25c8-4bcf-a343-d25a7ba15f1d_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/d29feb0c-25c8-4bcf-a343-d25a7ba15f1d_best.jpg"}]}, {"id": "8dcc5fd7", "full_id": "8dcc5fd7-4108-4e48-b1d1-a955bdf56e5a", "best_frame": "frames/8dcc5fd7-4108-4e48-b1d1-a955bdf56e5a_best.jpg", "timestamp": "23:01:21", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/8dcc5fd7-4108-4e48-b1d1-a955bdf56e5a_first.jpg"}, {"slot": "exit", "reid_crop_path": "crops/8dcc5fd7-4108-4e48-b1d1-a955bdf56e5a_exit.jpg"}, {"slot": "best", "reid_crop_path": "crops/8dcc5fd7-4108-4e48-b1d1-a955bdf56e5a_best.jpg"}]}, {"id": "22f0597b", "full_id": "22f0597b-5d8f-4c63-ba50-8ee0a9ef7d10", "best_frame": "frames/22f0597b-5d8f-4c63-ba50-8ee0a9ef7d10_best.jpg", "timestamp": "23:01:23", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/22f0597b-5d8f-4c63-ba50-8ee0a9ef7d10_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/22f0597b-5d8f-4c63-ba50-8ee0a9ef7d10_best.jpg"}]}, {"id": "cb695988", "full_id": "cb695988-669a-412a-9bf9-c615d6ef6fb0", "best_frame": "frames/cb695988-669a-412a-9bf9-c615d6ef6fb0_best.jpg", "timestamp": "23:02:00", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/cb695988-669a-412a-9bf9-c615d6ef6fb0_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/cb695988-669a-412a-9bf9-c615d6ef6fb0_best.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/cb695988-669a-412a-9bf9-c615d6ef6fb0_angle_1.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/cb695988-669a-412a-9bf9-c615d6ef6fb0_angle_2.jpg"}]}, {"id": "a0ac72a2", "full_id": "a0ac72a2-30a1-4802-8bc4-907467386332", "best_frame": "frames/a0ac72a2-30a1-4802-8bc4-907467386332_first.jpg", "timestamp": "23:02:04", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/a0ac72a2-30a1-4802-8bc4-907467386332_first.jpg"}, {"slot": "exit", "reid_crop_path": "crops/a0ac72a2-30a1-4802-8bc4-907467386332_exit.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/a0ac72a2-30a1-4802-8bc4-907467386332_angle_1.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/a0ac72a2-30a1-4802-8bc4-907467386332_angle_2.jpg"}, {"slot": "angle_3", "reid_crop_path": "crops/a0ac72a2-30a1-4802-8bc4-907467386332_angle_3.jpg"}]}, {"id": "ebb124dc", "full_id": "ebb124dc-c69f-48fe-9c39-f6963f66f198", "best_frame": "frames/ebb124dc-c69f-48fe-9c39-f6963f66f198_best.jpg", "timestamp": "23:01:31", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/ebb124dc-c69f-48fe-9c39-f6963f66f198_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/ebb124dc-c69f-48fe-9c39-f6963f66f198_best.jpg"}, {"slot": "exit", "reid_crop_path": "crops/ebb124dc-c69f-48fe-9c39-f6963f66f198_exit.jpg"}]}, {"id": "dfce9b3e", "full_id": "dfce9b3e-0c7c-43e4-930c-f5a1f2b66d64", "best_frame": "frames/dfce9b3e-0c7c-43e4-930c-f5a1f2b66d64_first.jpg", "timestamp": "21:17:33", "camera": "demo_cam", "views": [{"slot": "angle_1", "reid_crop_path": "crops/dfce9b3e-0c7c-43e4-930c-f5a1f2b66d64_angle_1.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/dfce9b3e-0c7c-43e4-930c-f5a1f2b66d64_angle_2.jpg"}, {"slot": "angle_3", "reid_crop_path": "crops/dfce9b3e-0c7c-43e4-930c-f5a1f2b66d64_angle_3.jpg"}, {"slot": "first", "reid_crop_path": "crops/dfce9b3e-0c7c-43e4-930c-f5a1f2b66d64_first.jpg"}, {"slot": "exit", "reid_crop_path": "crops/dfce9b3e-0c7c-43e4-930c-f5a1f2b66d64_exit.jpg"}]}, {"id": "aef5e06c", "full_id": "aef5e06c-6a25-4e3a-8a0b-f8e24c279700", "best_frame": "frames/aef5e06c-6a25-4e3a-8a0b-f8e24c279700_best.jpg", "timestamp": "21:17:41", "camera": "demo_cam", "views": [{"slot": "best", "reid_crop_path": "crops/aef5e06c-6a25-4e3a-8a0b-f8e24c279700_best.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/aef5e06c-6a25-4e3a-8a0b-f8e24c279700_angle_1.jpg"}, {"slot": "first", "reid_crop_path": "crops/aef5e06c-6a25-4e3a-8a0b-f8e24c279700_first.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/aef5e06c-6a25-4e3a-8a0b-f8e24c279700_angle_2.jpg"}, {"slot": "exit", "reid_crop_path": "crops/aef5e06c-6a25-4e3a-8a0b-f8e24c279700_exit.jpg"}]}, {"id": "3c0ffb1f", "full_id": "3c0ffb1f-357d-42f6-896e-2d3c3781ecea", "best_frame": "frames/3c0ffb1f-357d-42f6-896e-2d3c3781ecea_best.jpg", "timestamp": "23:01:12", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/3c0ffb1f-357d-42f6-896e-2d3c3781ecea_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/3c0ffb1f-357d-42f6-896e-2d3c3781ecea_best.jpg"}]}, {"id": "e8d5f7e6", "full_id": "e8d5f7e6-5b43-469b-ba7b-817fc5e262da", "best_frame": "frames/e8d5f7e6-5b43-469b-ba7b-817fc5e262da_best.jpg", "timestamp": "23:02:05", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/e8d5f7e6-5b43-469b-ba7b-817fc5e262da_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/e8d5f7e6-5b43-469b-ba7b-817fc5e262da_best.jpg"}, {"slot": "exit", "reid_crop_path": "crops/e8d5f7e6-5b43-469b-ba7b-817fc5e262da_exit.jpg"}]}, {"id": "4c0993d2", "full_id": "4c0993d2-762e-42ea-8ab7-d5973b88ee41", "best_frame": "frames/4c0993d2-762e-42ea-8ab7-d5973b88ee41_best.jpg", "timestamp": "23:01:49", "camera": "demo_cam", "views": [{"slot": "best", "reid_crop_path": "crops/4c0993d2-762e-42ea-8ab7-d5973b88ee41_best.jpg"}, {"slot": "first", "reid_crop_path": "crops/4c0993d2-762e-42ea-8ab7-d5973b88ee41_first.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/4c0993d2-762e-42ea-8ab7-d5973b88ee41_angle_1.jpg"}, {"slot": "exit", "reid_crop_path": "crops/4c0993d2-762e-42ea-8ab7-d5973b88ee41_exit.jpg"}]}, {"id": "74303711", "full_id": "74303711-77da-41ec-b64b-b0cc2bf434d9", "best_frame": "frames/74303711-77da-41ec-b64b-b0cc2bf434d9_best.jpg", "timestamp": "23:01:48", "camera": "demo_cam", "views": [{"slot": "angle_1", "reid_crop_path": "crops/74303711-77da-41ec-b64b-b0cc2bf434d9_angle_1.jpg"}, {"slot": "best", "reid_crop_path": "crops/74303711-77da-41ec-b64b-b0cc2bf434d9_best.jpg"}, {"slot": "first", "reid_crop_path": "crops/74303711-77da-41ec-b64b-b0cc2bf434d9_first.jpg"}, {"slot": "exit", "reid_crop_path": "crops/74303711-77da-41ec-b64b-b0cc2bf434d9_exit.jpg"}]}, {"id": "6b4670a0", "full_id": "6b4670a0-0ebc-4886-bc0b-b779ac8577b8", "best_frame": "frames/6b4670a0-0ebc-4886-bc0b-b779ac8577b8_best.jpg", "timestamp": "23:01:22", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/6b4670a0-0ebc-4886-bc0b-b779ac8577b8_first.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/6b4670a0-0ebc-4886-bc0b-b779ac8577b8_angle_1.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/6b4670a0-0ebc-4886-bc0b-b779ac8577b8_angle_2.jpg"}, {"slot": "best", "reid_crop_path": "crops/6b4670a0-0ebc-4886-bc0b-b779ac8577b8_best.jpg"}, {"slot": "angle_3", "reid_crop_path": "crops/6b4670a0-0ebc-4886-bc0b-b779ac8577b8_angle_3.jpg"}]}, {"id": "f28e1320", "full_id": "f28e1320-9c22-4254-90a9-fa83d771bcf5", "best_frame": "frames/f28e1320-9c22-4254-90a9-fa83d771bcf5_best.jpg", "timestamp": "23:01:27", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/f28e1320-9c22-4254-90a9-fa83d771bcf5_first.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/f28e1320-9c22-4254-90a9-fa83d771bcf5_angle_1.jpg"}, {"slot": "exit", "reid_crop_path": "crops/f28e1320-9c22-4254-90a9-fa83d771bcf5_exit.jpg"}, {"slot": "best", "reid_crop_path": "crops/f28e1320-9c22-4254-90a9-fa83d771bcf5_best.jpg"}]}, {"id": "d2b8a98c", "full_id": "d2b8a98c-1033-4268-a69e-412731521d45", "best_frame": "frames/d2b8a98c-1033-4268-a69e-412731521d45_best.jpg", "timestamp": "23:01:44", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/d2b8a98c-1033-4268-a69e-412731521d45_first.jpg"}, {"slot": "exit", "reid_crop_path": "crops/d2b8a98c-1033-4268-a69e-412731521d45_exit.jpg"}, {"slot": "best", "reid_crop_path": "crops/d2b8a98c-1033-4268-a69e-412731521d45_best.jpg"}]}, {"id": "915f8ca6", "full_id": "915f8ca6-aefe-4766-975c-e95c3f92284a", "best_frame": "frames/915f8ca6-aefe-4766-975c-e95c3f92284a_best.jpg", "timestamp": "23:01:23", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/915f8ca6-aefe-4766-975c-e95c3f92284a_first.jpg"}, {"slot": "best", "reid_crop_path": "crops/915f8ca6-aefe-4766-975c-e95c3f92284a_best.jpg"}, {"slot": "exit", "reid_crop_path": "crops/915f8ca6-aefe-4766-975c-e95c3f92284a_exit.jpg"}]}, {"id": "5e0a347c", "full_id": "5e0a347c-d0de-427a-bd45-6038a7e39954", "best_frame": "frames/5e0a347c-d0de-427a-bd45-6038a7e39954_first.jpg", "timestamp": "23:02:00", "camera": "demo_cam", "views": [{"slot": "first", "reid_crop_path": "crops/5e0a347c-d0de-427a-bd45-6038a7e39954_first.jpg"}, {"slot": "exit", "reid_crop_path": "crops/5e0a347c-d0de-427a-bd45-6038a7e39954_exit.jpg"}, {"slot": "angle_1", "reid_crop_path": "crops/5e0a347c-d0de-427a-bd45-6038a7e39954_angle_1.jpg"}, {"slot": "angle_2", "reid_crop_path": "crops/5e0a347c-d0de-427a-bd45-6038a7e39954_angle_2.jpg"}, {"slot": "angle_3", "reid_crop_path": "crops/5e0a347c-d0de-427a-bd45-6038a7e39954_angle_3.jpg"}]}, {"id": "f0dd85cc", "full_id": "f0dd85cc-5cfc-47a5-a729-824f58758f77", "best_frame": "frames/f0dd85cc-5cfc-47a5-a729-824f58758f77_best.jpg", "timestamp": "21:17:19", "camera": "demo_cam", "views": [{"slot": "best", "reid_crop_path": "crops/f0dd85cc-5cfc-47a5-a729-824f58758f77_best.jpg"}, {"slot": "first", "reid_crop_path": "crops/f0dd85cc-5cfc-47a5-a729-824f58758f77_first.jpg"}, {"slot": "exit", "reid_crop_path": "crops/f0dd85cc-5cfc-47a5-a729-824f58758f77_exit.jpg"}]}];
+        let currVeh = 0;
+        let currView = 0;
+
+        const grid = document.getElementById('grid');
+        vehicles.forEach((v, i) => {
+            let imgSrc = v.best_frame;
+            if(!imgSrc && v.views.length > 0) imgSrc = v.views[0].reid_crop_path;
+
+            grid.innerHTML += `
+                <div class="card" onclick="openModal(${i})">
+                    <img src="${imgSrc}">
+                    <div class="info">
+                        <span class="badge">ID: ${v.id}</span>
+                        <div class="meta">
+                            <b>Čas:</b> ${v.timestamp}<br>
+                            <b>Uhlov:</b> ${v.views.length}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalThumbs = document.getElementById('modal-thumbs');
+        const modalTitle = document.getElementById('modal-title');
+
+        function openModal(idx) {
+            currVeh = idx;
+            currView = 0;
+            updateModal();
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        function updateModal() {
+            const v = vehicles[currVeh];
+            const view = v.views[currView];
+
+            modalImg.src = view.reid_crop_path;
+            modalTitle.innerHTML = `ID: <b>${v.id}</b> | Uhol: <b>${view.slot.toUpperCase()}</b>`;
+
+            modalThumbs.innerHTML = '';
+            v.views.forEach((vl, i) => {
+                modalThumbs.innerHTML += `
+                    <img src="${vl.reid_crop_path}" class="thumb ${i === currView ? 'active' : ''}" onclick="setView(${i})">
+                `;
+            });
+        }
+
+        function setView(idx) {
+            currView = idx;
+            updateModal();
+        }
+
+        function prevImage() {
+            currView = (currView - 1 + vehicles[currVeh].views.length) % vehicles[currVeh].views.length;
+            updateModal();
+        }
+
+        function nextImage() {
+            currView = (currView + 1) % vehicles[currVeh].views.length;
+            updateModal();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(!modal.classList.contains('active')) return;
+            if(e.key === 'ArrowLeft') prevImage();
+            if(e.key === 'ArrowRight') nextImage();
+            if(e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE
+.idea/
+.vscode/
+
+# Modely (veľké súbory)
+*.engine
+*.pth
+
+# Dáta a výstupy
+crops/
+frames/
+qdrant_demo/
+static/
+output_*.mp4
+*.avi
+*.mp4
+
+# Systémové
+.DS_Store
+Thumbs.db

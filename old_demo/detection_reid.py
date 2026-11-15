@@ -12,14 +12,15 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 import tensorrt as trt
 import pycuda.driver as cuda
-import pycuda.autoprimaryctx
 from generate_html import generate_html
+import pycuda.autoprimaryctx #nechytať
 
 #frames priečinok
 os.makedirs("frames", exist_ok=True)
 
 print("Načítavam YOLO TensorRT engine...")
-yolo_model = YOLO("../../modely/yolov8n_b1_512.engine", task='detect')
+yolo_model = YOLO("../models/yolo26n_tuned.pt", task='detect')
+
 
 print("Načítavam Vehicle ReID TensorRT engine...")
 TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
@@ -75,7 +76,7 @@ if not qdrant.collection_exists(collection_name):
     )
 
 #tracker nastavenia
-DET_CONF_THRES = 0.35
+DET_CONF_THRES = 0.30
 VEHICLE_CLASSES = [1, 2, 3, 5, 7] #bicycle, car, motorcycle, bus, truck
 
 args = SimpleNamespace(

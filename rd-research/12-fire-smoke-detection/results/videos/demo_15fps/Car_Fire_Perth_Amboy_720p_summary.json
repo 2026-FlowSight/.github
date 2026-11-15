@@ -1,0 +1,29 @@
+{
+ "video": "Car_Fire_Perth_Amboy_720p.webm",
+ "mode": {
+  "device": "mps",
+  "stride": 2,
+  "proc_fps": 15.0,
+  "conf": 0.4,
+  "window_s": 3.0,
+  "window_frames": 45,
+  "min_hits": 23,
+  "min_motion": 6.0,
+  "motion_gap_s": 1.0,
+  "hold_s": 5.0,
+  "imgsz": 512
+ },
+ "duration_s": 154.8,
+ "processed_frames": 2322,
+ "raw_detection_rate": 0.132,
+ "confirmed_rate": 0.078,
+ "alarm_rate": 0.193,
+ "alarm_events": 2,
+ "first_raw_detection_s": 8.13,
+ "first_alarm_s": 22.07,
+ "alarm_latency_s": 13.94,
+ "infer_ms_median": 8.16,
+ "infer_ms_p95": 9.22,
+ "verify_ms_median": 0.009,
+ "verify_ms_p95": 0.258
+}

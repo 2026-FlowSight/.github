@@ -1,0 +1,29 @@
+{
+ "video": "Pixabay_6455_traffic_lights_night.mp4",
+ "mode": {
+  "device": "mps",
+  "stride": 2,
+  "proc_fps": 14.99,
+  "conf": 0.4,
+  "window_s": 3.0,
+  "window_frames": 45,
+  "min_hits": 23,
+  "min_motion": 6.0,
+  "motion_gap_s": 1.0,
+  "hold_s": 5.0,
+  "imgsz": 512
+ },
+ "duration_s": 15.7,
+ "processed_frames": 235,
+ "raw_detection_rate": 0.013,
+ "confirmed_rate": 0.0,
+ "alarm_rate": 0.0,
+ "alarm_events": 0,
+ "first_raw_detection_s": 3.4,
+ "first_alarm_s": null,
+ "alarm_latency_s": null,
+ "infer_ms_median": 10.83,
+ "infer_ms_p95": 14.81,
+ "verify_ms_median": 0.013,
+ "verify_ms_p95": 0.018
+}

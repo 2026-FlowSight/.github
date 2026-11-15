@@ -1,0 +1,28 @@
+{
+ "video": "Pexels_8944148_ambulance_lights.mp4",
+ "mode": {
+  "stride": 12,
+  "proc_fps": 2.08,
+  "conf": 0.25,
+  "window_s": 3.0,
+  "window_frames": 6,
+  "min_hits": 3,
+  "min_motion": 0.0,
+  "motion_gap_s": 1.0,
+  "hold_s": 0.0,
+  "imgsz": 512
+ },
+ "duration_s": 13.7,
+ "processed_frames": 29,
+ "raw_detection_rate": 0.207,
+ "confirmed_rate": 0.069,
+ "alarm_rate": 0.069,
+ "alarm_events": 1,
+ "first_raw_detection_s": 0.0,
+ "first_alarm_s": 12.96,
+ "alarm_latency_s": 12.96,
+ "infer_ms_median": 21.36,
+ "infer_ms_p95": 22.61,
+ "verify_ms_median": 0.02,
+ "verify_ms_p95": 0.037
+}

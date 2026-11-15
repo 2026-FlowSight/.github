@@ -1,0 +1,61 @@
+{
+ "video": "nocne_video_360p.mp4",
+ "total_frames": 32704,
+ "sampled_every": 15,
+ "sampled_frames": 2181,
+ "brightness_median": 10.7,
+ "noise_sigma_median": 0.36,
+ "note": "bez anotácií: počet detekcií je len orientačný",
+ "results": {
+  "none": {
+   "mean_vehicles_per_frame": 0.029,
+   "frames_with_vehicle": 61,
+   "mean_conf": 0.588
+  },
+  "auto": {
+   "mean_vehicles_per_frame": 0.029,
+   "frames_with_vehicle": 61,
+   "mean_conf": 0.588
+  },
+  "gamma_auto": {
+   "mean_vehicles_per_frame": 0.151,
+   "frames_with_vehicle": 266,
+   "mean_conf": 0.36
+  },
+  "clahe": {
+   "mean_vehicles_per_frame": 0.061,
+   "frames_with_vehicle": 115,
+   "mean_conf": 0.457
+  },
+  "he": {
+   "mean_vehicles_per_frame": 0.059,
+   "frames_with_vehicle": 115,
+   "mean_conf": 0.349
+  },
+  "zero_dce": {
+   "mean_vehicles_per_frame": 0.095,
+   "frames_with_vehicle": 182,
+   "mean_conf": 0.396
+  },
+  "sci": {
+   "mean_vehicles_per_frame": 0.11,
+   "frames_with_vehicle": 215,
+   "mean_conf": 0.385
+  },
+  "wiener": {
+   "mean_vehicles_per_frame": 0.022,
+   "frames_with_vehicle": 49,
+   "mean_conf": 0.559
+  },
+  "bilateral": {
+   "mean_vehicles_per_frame": 0.026,
+   "frames_with_vehicle": 56,
+   "mean_conf": 0.587
+  },
+  "wiener_gamma": {
+   "mean_vehicles_per_frame": 0.065,
+   "frames_with_vehicle": 124,
+   "mean_conf": 0.436
+  }
+ }
+}

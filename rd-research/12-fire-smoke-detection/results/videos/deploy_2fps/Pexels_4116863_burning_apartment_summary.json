@@ -1,0 +1,29 @@
+{
+ "video": "Pexels_4116863_burning_apartment.mp4",
+ "mode": {
+  "device": "mps",
+  "stride": 15,
+  "proc_fps": 2.0,
+  "conf": 0.4,
+  "window_s": 3.0,
+  "window_frames": 6,
+  "min_hits": 3,
+  "min_motion": 6.0,
+  "motion_gap_s": 1.0,
+  "hold_s": 5.0,
+  "imgsz": 512
+ },
+ "duration_s": 6.8,
+ "processed_frames": 14,
+ "raw_detection_rate": 1.0,
+ "confirmed_rate": 0.714,
+ "alarm_rate": 0.714,
+ "alarm_events": 1,
+ "first_raw_detection_s": 0.0,
+ "first_alarm_s": 2.0,
+ "alarm_latency_s": 2.0,
+ "infer_ms_median": 16.38,
+ "infer_ms_p95": 16.66,
+ "verify_ms_median": 0.348,
+ "verify_ms_p95": 0.495
+}

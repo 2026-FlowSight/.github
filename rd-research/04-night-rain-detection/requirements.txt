@@ -1,0 +1,11 @@
+# Python 3.12, testované na Apple M2 (MPS); na Jetsone/CUDA rovnako
+torch>=2.6
+torchvision
+ultralytics>=8.4
+opencv-python
+numpy
+pandas
+matplotlib
+thop
+remotezip
+huggingface_hub

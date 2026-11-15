@@ -1,0 +1,18 @@
+method,kind,ms_960x540,ms_1920x1080,gflops_960x540,params
+gamma,klasická (odhad),0.47,2.18,0.003,0
+gamma_auto,klasická (odhad),0.86,3.53,0.004,0
+he,klasická (odhad),1.43,6.46,0.021,0
+clahe,klasická (odhad),4.19,17.56,0.031,0
+gamma_clahe,klasická (odhad),5.05,21.11,0.035,0
+msr,klasická (odhad),50.68,197.26,0.062,0
+wiener,klasická (odhad),21.53,90.12,0.041,0
+wiener_gamma,klasická (odhad),22.65,93.59,0.046,0
+bilateral,klasická (odhad),4.25,16.8,0.467,0
+nlmeans,klasická (odhad),401.2,1578.57,17.496,0
+dehaze,klasická (odhad),17.0,69.7,0.041,0
+sci,CNN (torch flop_counter),10.58,39.39,0.252,258
+zero_dce,CNN (torch flop_counter),15.12,55.85,0.11,10561
+auto: len odhad šumu (čistá snímka),klasická,0.25,0.252,0.0,0
+YOLO yolov8n.pt predict imgsz512 (960x540),,8.64,,,
+YOLO yolov8n.pt predict imgsz512 (1920x1080),,,8.86,,
+YOLO yolov8n.pt @512 (GFLOPs pri vstupe 512),CNN (ultralytics),,,5.67,3157200

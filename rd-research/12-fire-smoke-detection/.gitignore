@@ -1,0 +1,11 @@
+# dáta a veľké výstupy nepatria do gitu (pravidlo tímu + licencie datasetov)
+data/
+runs/
+*.mp4
+*.webm
+*.engine
+*.onnx
+*.pt
+!weights/fire_yolov8n_512.pt
+dfire512.yaml
+__pycache__/

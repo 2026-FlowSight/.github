@@ -1,0 +1,131 @@
+{
+ "popis": "ExDark test, YOLOv8n COCO imgsz 512, vozidlá vrátane bicyklov, podľa priemerného jasu (0-255)",
+ "0-15": {
+  "none": {
+   "images": 39,
+   "gt": 64,
+   "mAP50": 0.623,
+   "recall": 0.453
+  },
+  "gamma_auto": {
+   "images": 39,
+   "gt": 64,
+   "mAP50": 0.378,
+   "recall": 0.266
+  },
+  "clahe": {
+   "images": 39,
+   "gt": 64,
+   "mAP50": 0.638,
+   "recall": 0.484
+  },
+  "zero_dce": {
+   "images": 39,
+   "gt": 64,
+   "mAP50": 0.486,
+   "recall": 0.391
+  },
+  "wiener": {
+   "images": 39,
+   "gt": 64,
+   "mAP50": 0.591,
+   "recall": 0.438
+  }
+ },
+ "15-30": {
+  "none": {
+   "images": 78,
+   "gt": 167,
+   "mAP50": 0.665,
+   "recall": 0.557
+  },
+  "gamma_auto": {
+   "images": 78,
+   "gt": 167,
+   "mAP50": 0.47,
+   "recall": 0.371
+  },
+  "clahe": {
+   "images": 78,
+   "gt": 167,
+   "mAP50": 0.655,
+   "recall": 0.557
+  },
+  "zero_dce": {
+   "images": 78,
+   "gt": 167,
+   "mAP50": 0.6,
+   "recall": 0.491
+  },
+  "wiener": {
+   "images": 78,
+   "gt": 167,
+   "mAP50": 0.631,
+   "recall": 0.545
+  }
+ },
+ "30-60": {
+  "none": {
+   "images": 119,
+   "gt": 296,
+   "mAP50": 0.607,
+   "recall": 0.547
+  },
+  "gamma_auto": {
+   "images": 119,
+   "gt": 296,
+   "mAP50": 0.554,
+   "recall": 0.48
+  },
+  "clahe": {
+   "images": 119,
+   "gt": 296,
+   "mAP50": 0.608,
+   "recall": 0.541
+  },
+  "zero_dce": {
+   "images": 119,
+   "gt": 296,
+   "mAP50": 0.558,
+   "recall": 0.514
+  },
+  "wiener": {
+   "images": 119,
+   "gt": 296,
+   "mAP50": 0.579,
+   "recall": 0.459
+  }
+ },
+ "60-256": {
+  "none": {
+   "images": 35,
+   "gt": 73,
+   "mAP50": 0.686,
+   "recall": 0.671
+  },
+  "gamma_auto": {
+   "images": 35,
+   "gt": 73,
+   "mAP50": 0.67,
+   "recall": 0.644
+  },
+  "clahe": {
+   "images": 35,
+   "gt": 73,
+   "mAP50": 0.697,
+   "recall": 0.712
+  },
+  "zero_dce": {
+   "images": 35,
+   "gt": 73,
+   "mAP50": 0.652,
+   "recall": 0.671
+  },
+  "wiener": {
+   "images": 35,
+   "gt": 73,
+   "mAP50": 0.682,
+   "recall": 0.603
+  }
+ }
+}

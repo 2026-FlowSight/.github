@@ -105,70 +105,61 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 <details>
 <summary><h2>DEV Backend Tasky (Klikni pre rozbalenie)</h2></summary>
 
-### DEV01 - Video Parser a Loader
-- [ ] Skript sa spustí bez chýb
-- [ ] Vypíše počet snímok a FPS
-- [ ] Dokáže vrátiť snímky jedna po druhej
+### DEV01 - Core Video Pipeline (Parser, YOLO, Tracking, ReID, Filtre, Smer)
+**Popis:** Vytvoriť kompletný spracovateľský reťazec (pipeline) pre jedno video. Na vstupe je video súbor (RoundaboutHD), na výstupe je spracované video s nakreslenými bboxami, trailmi a uloženými dátami v Qdrant databáze. Súčasťou je aj logika pre filtrovanie zlých detekcií a výpočet smeru jazdy.
 
-### DEV02 - YOLO Detekcia a Tracking
-- [ ] Video sa prehráva plynule
-- [ ] Bboxy a ID sedia na autách
-- [ ] Traily sa kreslia správne
+**Čo task zahŕňa (pôvodné časti):**
+*   **Video Parser a Loader:** Načítanie videa, zistenie FPS a počtu snímok, vracanie snímok (so stride).
+*   **YOLO Detekcia a Tracking:** Detekcia vozidiel, priradenie ID (ByteTrack) a kreslenie trajektórií.
+*   **Filtrovanie zlých bboxov:** Odstránenie detekcií, ktoré sú na okraji kamery, príliš úzke alebo malé.
+*   **ReID Storage a Najlepší záber:** Extrakcia embeddingov, výber najlepšieho záberu (prvý/stredný/posledný) a ukladanie do Qdrant a na disk (`frames/`, `crops/`).
+*   **Smer jazdy vozidla:** Výpočet vektora pohybu z trajektórie a určenie smeru.
 
-### DEV03 - ReID Embeddingy a Qdrant Storage
-- [ ] V Qdrant pribúdajú body pri nových autách
-- [ ] Payload obsahuje `original_id`, `frame_path`, `timestamp`, `camera`
-- [ ] Obrázky sa ukladajú do priečinka `frames/` a `crops/`
+**Checklist:**
+- [ ] Skript sa spustí bez chýb (načíta video, vypíše FPS a počet snímok)
+- [ ] Video sa prehráva plynule, bboxy a ID sedia na autách
+- [ ] Traily (trajektórie) sa kreslia správne
+- [ ] V DB nie sú autá, ktoré sú len čiastočne v zábere (kontrola MARGIN)
+- [ ] V DB nie sú príliš rozmazané alebo úzke detekcie (kontrola aspect_ratio)
+- [ ] V Qdrant pribúdajú body pri nových autách (ukladá sa `original_id`, `frame_path`, `timestamp`, `camera`)
+- [ ] Obrázky sa ukladajú do priečinka `frames/` a `crops/` (ukladá sa najlepší záber)
+- [ ] Funkcia vráti správny smer jazdy vozidla na testovacom videu (odolná voči šumu)
 
-### DEV04 - Výber Najlepšieho Záberu
-- [ ] V DB sú pre jedno auto rôzne uhly (ak boli dostupné)
-- [ ] Staré, nekvalitné zábery sa nahrádzajú lepšími
-
-### DEV05 - Filtrovanie Zlých Bboxov
-- [ ] V DB nie sú autá, ktoré sú len čiastočne v zábere
-- [ ] V DB nie sú príliš rozmazané alebo úzke detekcie
-
-### DEV06 - Multi-query ReID Vyhľadávanie
-- [ ] Pri prechode auta z kamery 1 na kameru 2 sa vypíše "REID MATCH"
-- [ ] Threshold je nastaviteľný v konfigurácii
-
-### DEV07 - Časová a Priestorová Kauzalita
+### DEV02 - Časová a Priestorová Kauzalita
 - [ ] Funkcia funguje na mock dátach
 - [ ] Dokáže spojiť auto aj keď ReID zlyhal, ale čas a vzdialenosť sedia
 
-### DEV08 - Smer Jazdy Vozidla
-- [ ] Funkcia vráti správny smer na testovacom videu
-- [ ] Je odolná voči šumu (napr. použiť priemer z viacerých bodov)
-
-### DEV09 - Počítanie Áut na Parkovisku
+### DEV03 - Počítanie Áut na Parkovisku
 - [ ] Skript spočíta autá na testovacom videu
 - [ ] Výstup je CSV s časom a počtom áut
 
-### DEV10 - Klasifikácia Farieb (HSV)
+### DEV04 - Klasifikácia Farieb (HSV)
 - [ ] Funkcia vráti farbu pre testovacie výrezy
 - [ ] Výsledky sú aspoň na 80 % správne pri jasných farbách
 
-### DEV11 - Mapovanie Presetov (PTZ)
+### DEV05 - Mapovanie Presetov (PTZ)
 - [ ] Konfigurácia existuje
 - [ ] Skript dokáže zistiť aktuálny preset (alebo aspoň manuálne prepnutie)
 
-### DEV12 - Integrácia Klasifikátora Vozidiel
-- [ ] V Qdrant sú značky a modely áut
+### DEV06 - Integrácia Klasifikátora Typu Vozidla
+**Popis:** Keďže výskum (R&D) ukázal, že rozpoznávanie konkrétnej značky a modelu (napr. Škoda Octavia) je z našich kamier nereálne, integrujeme klasifikátor, ktorý rozlíši **typ karosérie** (napr. sedan, pickup, SUV, hatchback, dodávka). Tento model beží na výrezoch áut a výsledok ukladáme do Qdrant.
+- [ ] V Qdrant sú pre autá uložené typy vozidiel (sedan, pickup, atď.)
 - [ ] Model beží v rozumnom čase (napr. < 50 ms na výrez)
+- [ ] Presnosť modelu je otestovaná na našich výrezoch z RoundaboutHD
 
-### DEV13 - Integrácia Detekcie Ohňa
+### DEV07 - Integrácia Detekcie Ohňa
 - [ ] Model deteguje oheň na testovacom videu
 - [ ] Alert sa zobrazí v dashboarde
 
-### DEV18 - Integrácia Axis LPR
+### DEV08 - Integrácia Axis LPR
 - [ ] Endpoint prijme mock JSON
 - [ ] Dáta sa uložia do Qdrant
 
-### DEV19 - Detekcia Nehôd (Pravidlá)
+### DEV09 - Detekcia Nehôd (Pravidlá)
 - [ ] Pravidlá bežia na CPU
 - [ ] Vygenerujú alert pri simulovanej nehode
 
-### DEV20 - OCR pre Čítanie Presetov
+### DEV10 - OCR pre Čítanie Presetov
 - [ ] OCR prečíta text aspoň na 90 % testovacích snímok
 - [ ] Výsledok sa použije na prepnutie trackera
 
@@ -179,20 +170,20 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 <details>
 <summary><h2>DEV Dashboard Tasky (Klikni pre rozbalenie)</h2></summary>
 
-### DEV14 - FastAPI Server
+### DEV11 - FastAPI Server
 - [ ] API beží na localhoste
 - [ ] Endpointy vracajú dáta z Qdrant
 
-### DEV15 - Interaktívna Mapa (Leaflet)
+### DEV12 - Interaktívna Mapa (Leaflet)
 - [ ] Mapa sa načíta
 - [ ] Vrstvy sa dajú vypnúť/zapnúť
 - [ ] Kamery sú klikateľné
 
-### DEV16 - Vyhľadávací Dashboard (Frontend)
+### DEV13 - Vyhľadávací Dashboard (Frontend)
 - [ ] Nahrávanie obrázka funguje
 - [ ] Výsledky sa zobrazia do 2 sekúnd
 
-### DEV17 - Export Výsledkov (PDF/CSV)
+### DEV14 - Export Výsledkov (PDF/CSV)
 - [ ] Export funguje pre mock dáta
 - [ ] Súbor sa stiahne do prehliadača
 

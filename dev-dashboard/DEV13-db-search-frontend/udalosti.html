@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>FlowSight · Udalosti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@87.5..100,400..700&display=swap">
+<link rel="stylesheet" href="styles.css?v=20261116j">
+<link rel="stylesheet" href="events.css?v=20261116j">
+<script defer src="data/cameras.js?v=20261116j"></script>
+<script defer src="data/events.js?v=20261116j"></script>
+<script defer src="events.js?v=20261116j"></script>
+</head>
+<body>
+<svg class="icon-library" aria-hidden="true"><defs>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></symbol>
+ <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8.5h11v8H3z"/><path d="m14 11 6-3v9l-6-3"/><path d="M6 16.5 5 20m6-3.5 1 3.5"/></symbol>
+ <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+ <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5m0 3v.01"/></symbol>
+ <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+ <symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 12V6.5a1.5 1.5 0 0 1 3 0V11m0-5.5a1.5 1.5 0 0 1 3 0V11m0-4a1.5 1.5 0 0 1 3 0v6.5A6.5 6.5 0 0 1 10.5 20h0A5.5 5.5 0 0 1 6 17.6L4 14.5a1.6 1.6 0 0 1 2.6-1.8L8 14"/></symbol>
+ <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7 4 12l5 5"/><path d="M4 12h10a6 6 0 0 1 0 12h-1"/></symbol>
+</defs></svg>
+
+<header class="appbar">
+ <a class="brand" href="index.html" aria-label="FlowSight Pezinok">
+  <svg class="brand-mark" viewBox="0 0 32 36" aria-hidden="true"><path d="M3 3h26v15c0 8-6 13.5-13 15C9 31.5 3 26 3 18Z"/><circle cx="16" cy="16" r="5.2"/><circle cx="16" cy="16" r="1.6"/></svg>
+  <span class="brand-name">FlowSight</span><span class="brand-city">Pezinok</span>
+ </a>
+ <nav class="modules" aria-label="Moduly dashboardu">
+  <a class="module" href="../DEV12-interactive-map/mapa.html">Mapa</a>
+  <a class="module is-current" href="udalosti.html" aria-current="page">Udalosti</a>
+  <span class="module" aria-disabled="true" title="Pripravuje sa">Štatistiky</span>
+  <span class="module" aria-disabled="true" title="Pripravuje sa">Kamery</span>
+  <a class="module" href="index.html">Vyhľadávanie</a>
+ </nav>
+ <span class="mode-pill" data-mode="demo" title="Udalosti sú vymyslené, slúžia len na ukážku rozhrania."><i></i><span>Ukážkové udalosti</span></span>
+</header>
+
+<main class="page events-page">
+ <div class="page-head">
+  <h1>Udalosti</h1>
+  <p>Čo FlowSight zachytil na mestských kamerách a čo treba preveriť. Najnovšie hore.</p>
+ </div>
+
+ <div class="events-layout">
+  <section class="panel feed" aria-labelledby="feed-title">
+   <h2 id="feed-title" class="sr-only">Zoznam udalostí</h2>
+   <div class="feed-tools">
+    <div class="segmented status-tabs" id="status-tabs" role="radiogroup" aria-label="Stav udalosti"></div>
+    <div class="type-filter" id="type-filter" role="group" aria-label="Typ udalosti"></div>
+   </div>
+   <ol id="feed" class="feed-list"></ol>
+   <div id="feed-empty" class="feed-empty" hidden>
+    <p id="feed-empty-text"></p>
+    <button type="button" class="link-button" id="feed-reset">Zobraziť všetky udalosti</button>
+   </div>
+  </section>
+
+  <section class="panel detail" id="detail" aria-live="polite" aria-labelledby="detail-title"></section>
+ </div>
+
+ <footer class="footer">
+  <span>FlowSight · udalosti · ukážka rozhrania. Udalosti sú vymyslené a zmeny stavu sa po obnovení stránky stratia.</span>
+ </footer>
+</main>
+</body>
+</html>

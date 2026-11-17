@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>FlowSight · Vyhľadávanie vozidiel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@87.5..100,400..700&display=swap">
+<link rel="stylesheet" href="styles.css?v=20261116j">
+<script defer src="data/cameras.js?v=20261116j"></script>
+<script defer src="app.js?v=20261116j"></script>
+</head>
+<body>
+<svg class="icon-library" aria-hidden="true"><defs>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></symbol>
+ <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 15v5h16v-5"/></symbol>
+ <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8.5h11v8H3z"/><path d="m14 11 6-3v9l-6-3"/><path d="M6 16.5 5 20m6-3.5 1 3.5"/></symbol>
+ <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+ <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+ <symbol id="i-compare" viewBox="0 0 24 24"><rect x="3" y="5" width="7.5" height="14" rx="1"/><rect x="13.5" y="5" width="7.5" height="14" rx="1"/></symbol>
+ <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10m-7 6h4"/></symbol>
+ <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5.5m0 3v.01"/></symbol>
+</defs></svg>
+
+<header class="appbar">
+ <a class="brand" href="index.html" aria-label="FlowSight Pezinok – vyhľadávanie vozidiel">
+  <svg class="brand-mark" viewBox="0 0 32 36" aria-hidden="true"><path d="M3 3h26v15c0 8-6 13.5-13 15C9 31.5 3 26 3 18Z"/><circle cx="16" cy="16" r="5.2"/><circle cx="16" cy="16" r="1.6"/></svg>
+  <span class="brand-name">FlowSight</span><span class="brand-city">Pezinok</span>
+ </a>
+ <nav class="modules" aria-label="Moduly dashboardu">
+  <a class="module" href="../DEV12-interactive-map/mapa.html">Mapa</a>
+  <a class="module" href="udalosti.html">Udalosti</a>
+  <span class="module" aria-disabled="true" title="Pripravuje sa">Štatistiky</span>
+  <span class="module" aria-disabled="true" title="Pripravuje sa">Kamery</span>
+  <a class="module is-current" href="./" aria-current="page">Vyhľadávanie</a>
+ </nav>
+ <span id="mode-pill" class="mode-pill" data-mode="demo"><i></i><span id="mode-label">Ukážkové dáta</span></span>
+</header>
+
+<main class="page">
+ <div class="page-head">
+  <h1>Vyhľadávanie vozidiel</h1>
+  <p>Nahrajte záber vozidla a FlowSight nájde tri najpodobnejšie záznamy z kamier.</p>
+ </div>
+
+ <div class="layout">
+  <form id="query-form" class="query" novalidate>
+   <section class="panel" aria-labelledby="query-title">
+    <h2 id="query-title">Hľadané vozidlo</h2>
+
+    <div id="drop-zone" class="viewfinder">
+     <input id="file" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Nahrať fotografiu vozidla" aria-describedby="file-help upload-error">
+     <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+     <div id="upload-prompt" class="upload-prompt">
+      <svg><use href="#i-upload"/></svg>
+      <strong>Presuňte sem fotografiu</strong>
+      <span>alebo kliknite a vyberte súbor</span>
+     </div>
+     <img id="query-image" alt="Hľadané vozidlo" hidden>
+     <span class="scanline" aria-hidden="true"></span>
+    </div>
+
+    <div id="file-row" class="file-row" hidden>
+     <span id="file-name"></span>
+     <button id="remove" type="button" class="icon-button" aria-label="Odstrániť fotografiu"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <p id="file-help" class="hint">JPG, PNG alebo WebP do 10 MB. Najlepšie poslúži ostrý záber jedného vozidla.</p>
+    <p id="upload-error" class="field-error" role="alert" hidden></p>
+
+    <h3 class="subhead" id="gallery-title">Alebo vyberte z posledných detekcií</h3>
+    <div id="gallery" class="gallery" role="group" aria-labelledby="gallery-title"></div>
+   </section>
+
+   <details class="panel filters" id="filters">
+    <summary>
+     <span class="filters-title"><svg><use href="#i-filter"/></svg><span>Zúžiť hľadanie</span></span>
+     <span id="filter-summary" class="filter-summary">Všetky kamery, kedykoľvek</span>
+    </summary>
+    <fieldset>
+     <legend>Časové obdobie</legend>
+     <div class="chips">
+      <label class="chip"><input type="radio" name="range" value="all" checked><span>Kedykoľvek</span></label>
+      <label class="chip"><input type="radio" name="range" value="today"><span>Dnes</span></label>
+      <label class="chip"><input type="radio" name="range" value="24h"><span>Posledných 24 h</span></label>
+      <label class="chip"><input type="radio" name="range" value="7d"><span>Posledných 7 dní</span></label>
+     </div>
+    </fieldset>
+    <fieldset>
+     <legend>Kamery podľa častí mesta</legend>
+     <div id="only-camera" class="only-camera" hidden></div>
+     <div id="camera-list" class="checks"></div>
+    </fieldset>
+   </details>
+
+   <button id="search-button" type="submit" class="primary" disabled>
+    <svg><use href="#i-search"/></svg><span id="search-label">Vyhľadať vozidlo</span>
+   </button>
+  </form>
+
+  <section class="panel results" aria-labelledby="results-title" aria-busy="false">
+   <div class="results-head">
+    <div>
+     <h2 id="results-title">Výsledky</h2>
+     <p id="results-sub" class="results-sub">Zatiaľ ste nič nehľadali.</p>
+    </div>
+    <span id="timing" class="timing" hidden></span>
+   </div>
+   <div id="status" class="sr-only" role="status" aria-live="polite"></div>
+
+   <div id="stale-note" class="stale-note" hidden>
+    <svg><use href="#i-alert"/></svg>
+    <p>Filtre sa zmenili. Výsledky nižšie patria k predchádzajúcemu hľadaniu.</p>
+    <button id="stale-rerun" type="button" class="secondary">Hľadať znova</button>
+   </div>
+
+   <div id="state-idle" class="state-idle">
+    <div class="slots" aria-hidden="true"><span>1</span><span>2</span><span>3</span></div>
+    <p>Tu sa zobrazia tri záznamy, ktoré sa na hľadané vozidlo podobajú najviac, aj s časom a kamerou.</p>
+    <button id="try-button" type="button" class="secondary">Vyskúšať s ukážkovým záberom</button>
+   </div>
+
+   <ol id="skeleton" class="result-list is-skeleton" aria-hidden="true" hidden>
+    <li class="result"><div class="result-media"></div><div class="result-body"><i></i><i></i><i></i></div></li>
+    <li class="result"><div class="result-media"></div><div class="result-body"><i></i><i></i><i></i></div></li>
+    <li class="result"><div class="result-media"></div><div class="result-body"><i></i><i></i><i></i></div></li>
+   </ol>
+
+   <div id="state-message" class="state-message" hidden>
+    <svg><use href="#i-alert"/></svg>
+    <h3 id="message-title"></h3>
+    <p id="message-text"></p>
+    <button id="message-action" type="button" class="secondary"></button>
+   </div>
+
+   <ol id="result-list" class="result-list" hidden></ol>
+   <p id="result-note" class="note" hidden></p>
+  </section>
+ </div>
+
+ <footer class="footer">
+  <span>FlowSight · vyhľadávací dashboard · DEV13 / SCRUM-26</span>
+  <details class="devtools">
+   <summary>Pre vývojárov</summary>
+   <div class="devtools-body">
+    <label for="api-url">Adresa API</label>
+    <input id="api-url" type="url" placeholder="napr. http://127.0.0.1:8000" spellcheck="false" autocomplete="off">
+    <p class="hint">Prázdne pole = ukážkové dáta. S adresou sa obrázok posiela cez <code>POST /api/search</code> (multipart, pole <code>image</code>). Kontrakt je návrh na dohodu s backendom.</p>
+    <label class="check"><input id="simulate-error" type="checkbox"><span>Simulovať chybu API (iba ukážkové dáta)</span></label>
+   </div>
+  </details>
+ </footer>
+</main>
+
+<dialog id="compare" aria-labelledby="compare-title">
+ <div class="dialog-head">
+  <h2 id="compare-title">Porovnanie</h2>
+  <button id="close-compare" type="button" class="icon-button" aria-label="Zavrieť porovnanie"><svg><use href="#i-close"/></svg></button>
+ </div>
+ <div class="compare-grid">
+  <figure><img id="compare-query" alt=""><figcaption>Hľadané vozidlo</figcaption></figure>
+  <figure><img id="compare-record" alt=""><figcaption id="compare-record-caption">Záznam z kamery</figcaption></figure>
+ </div>
+ <dl id="compare-meta" class="compare-meta"></dl>
+</dialog>
+</body>
+</html>

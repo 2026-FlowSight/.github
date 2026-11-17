@@ -1,0 +1,163 @@
+/* FlowSight – mapa Pezinka (doplnok k styles.css) */
+.map-page { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.map-layout {
+  flex: 1; min-height: 0; display: grid; grid-template-columns: 300px minmax(0, 1fr);
+  gap: 16px; padding: 16px clamp(16px, 2vw, 24px);
+}
+.map-side { display: flex; flex-direction: column; gap: 16px; overflow-y: auto; min-height: 0; }
+.side-block { padding: 18px 18px 16px; }
+.side-block h2 { margin-bottom: 12px; }
+.side-head { display: flex; align-items: baseline; justify-content: space-between; }
+.count { font-size: 13px; color: var(--faint); }
+
+.layer-list { display: flex; flex-direction: column; gap: 2px; }
+.layer { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; cursor: pointer; }
+.layer input { width: 17px; height: 17px; margin: 0; accent-color: var(--accent); }
+.swatch { width: 18px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+.swatch-camera { width: 12px; height: 12px; border-radius: 6px; background: var(--accent); box-shadow: 0 0 0 3px #cfe0fc; margin: 0 3px; }
+.swatch-lot { background: rgba(31, 138, 95, .35); border: 1.5px solid #1e8a5f; }
+.swatch-zone { background: rgba(240, 180, 41, .25); border: 1.5px dashed #c58a06; }
+.swatch-boundary { height: 0; border-top: 2.5px dashed var(--navy); border-radius: 0; }
+
+.camera-list, .camera-sublist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.camera-group { border-top: 1px solid var(--line-soft); }
+.camera-group:first-child { border-top: 0; }
+.camera-group summary {
+  display: flex; justify-content: space-between; align-items: center; padding: 10px 2px;
+  font-weight: 600; font-size: 14px; cursor: pointer; list-style: none;
+}
+.camera-group summary::-webkit-details-marker { display: none; }
+.camera-group summary::before { content: "▸"; color: var(--faint); margin-right: 8px; transition: transform .15s; }
+.camera-group details[open] summary::before { transform: rotate(90deg); }
+.camera-group summary span:first-of-type { flex: 1; }
+.camera-sublist { padding-bottom: 6px; }
+.cam-no {
+  flex-shrink: 0; min-width: 26px; height: 22px; padding: 0 5px; display: grid; place-items: center; border-radius: 11px;
+  background: var(--accent-wash); color: var(--accent-ink); font-family: var(--display); font-stretch: 87.5%; font-weight: 700; font-size: 12px;
+}
+.camera-row { display: flex; align-items: center; gap: 4px; }
+.camera-focus {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 7px 4px;
+  border: 0; background: none; text-align: left; border-radius: var(--radius-sm);
+}
+.camera-focus:hover { background: #f4f7fb; }
+.camera-focus.is-active { background: var(--accent-wash); }
+.camera-focus svg { width: 18px; height: 18px; color: var(--accent); }
+.camera-focus strong { display: block; font-size: 14px; font-weight: 600; }
+.camera-focus small { display: block; font-size: 13px; color: var(--muted); }
+.camera-search { display: grid; place-items: center; width: 34px; height: 34px; border-radius: var(--radius-sm); color: var(--accent-ink); }
+.camera-search:hover { background: var(--accent-wash); }
+.camera-search svg { width: 18px; height: 18px; }
+
+.source { margin: auto 0 0; font-size: 12px; line-height: 1.5; color: var(--faint); }
+
+.map-wrap { position: relative; overflow: hidden; min-height: 0; }
+.map { position: absolute; inset: 0; background: #e9eef3; }
+/* OSM podklad trochu stlmíme, aby vrstvy FlowSight vynikli. */
+.map .leaflet-tile-pane { filter: saturate(.55) brightness(1.03); }
+.map-error {
+  position: absolute; left: 16px; right: 16px; top: 16px; z-index: 1000; margin: 0;
+  padding: 10px 12px; border-radius: var(--radius-sm); background: var(--danger-wash); color: var(--danger); font-size: 14px;
+}
+
+/* Leaflet v štýle dashboardu */
+.leaflet-container { font-family: var(--ui); font-size: 14px; }
+.leaflet-bar a { color: var(--ink); }
+.leaflet-control-attribution { font-size: 11px; }
+.leaflet-popup-content-wrapper { border-radius: var(--radius); box-shadow: 0 6px 24px rgba(19, 35, 58, .18); }
+.leaflet-popup-content { margin: 14px 16px; line-height: 1.45; }
+.leaflet-popup-content p { margin: 0; }
+.leaflet-popup-content p + p { margin-top: 2px; }
+.popup-title { font-family: var(--display); font-stretch: 87.5%; font-weight: 600; font-size: 17px; margin: 0; }
+.popup-sub { color: var(--muted); margin: 2px 0 0; }
+.popup-meta { color: var(--faint); font-size: 13px; margin-top: 4px !important; }
+.popup-tag {
+  display: inline-block; margin-top: 8px; padding: 2px 8px; border-radius: 4px;
+  background: #fdf6e3; color: #8a5a00; font-size: 12px; font-weight: 500;
+}
+.popup-tag.is-rough { background: #fdf1e7; color: var(--warn); }
+.popup-actions { display: flex; gap: 8px; margin-top: 12px; }
+.popup-actions a, .popup-actions span {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600;
+}
+.leaflet-container .popup-actions a { background: var(--accent); color: #fff; }
+.leaflet-container .popup-actions a:hover { background: var(--accent-ink); }
+.popup-actions span { border: 1px solid var(--line); color: var(--faint); cursor: not-allowed; }
+.popup-actions svg { width: 16px; height: 16px; }
+
+/* Značka kamery: bod + výhľad (kužeľ) */
+.cam-marker { position: relative; }
+.cam-cone { position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; pointer-events: none; }
+.cam-cone path { fill: rgba(31, 111, 235, .16); stroke: rgba(31, 111, 235, .45); stroke-width: 1; }
+.cam-dot {
+  position: absolute; left: 50%; top: 50%; min-width: 24px; height: 24px; margin: -12px 0 0 -12px; padding: 0 4px;
+  display: grid; place-items: center; border-radius: 12px;
+  background: var(--accent); color: #fff; border: 2px solid #fff; box-shadow: 0 1px 5px rgba(19, 35, 58, .4);
+  font-family: var(--display); font-stretch: 87.5%; font-weight: 700; font-size: 12px; line-height: 1;
+}
+.cam-marker.is-static .cam-dot { background: #fff; color: var(--accent-ink); border-color: var(--accent); }
+.cam-marker.is-active .cam-dot { background: var(--navy); color: #fff; border-color: #fff; box-shadow: 0 0 0 4px rgba(31, 111, 235, .4), 0 1px 5px rgba(19, 35, 58, .4); }
+.lot-label { background: none; border: 0; box-shadow: none; }
+
+@media (max-width: 860px) {
+  .map-page { height: auto; overflow: visible; }
+  .map-layout { grid-template-columns: 1fr; }
+  .map-wrap { order: -1; height: 62vh; min-height: 360px; }
+  .map-side { overflow: visible; }
+}
+
+/* Filtre kamier – fasety */
+.cam-search {
+  display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 10px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; cursor: text;
+}
+.cam-search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px #d6e4fb; }
+.cam-search svg { width: 17px; height: 17px; color: var(--faint); flex-shrink: 0; }
+.cam-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: inherit; font-size: 14px; color: var(--ink); }
+.cam-search input::placeholder { color: var(--faint); }
+
+.facet { margin: 0; padding: 14px 0 0; border: 0; }
+.facet legend, .facet-collapsible summary { margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.facet legend { float: left; width: 100%; }
+.facet legend + * { clear: both; }
+
+
+.facet-options { display: flex; flex-direction: column; }
+.facet-option {
+  display: flex; align-items: center; gap: 10px; padding: 5px 4px; margin: 0 -4px;
+  border-radius: var(--radius-sm); font-size: 14px; cursor: pointer;
+}
+.facet-option:hover { background: #f4f7fb; }
+.facet-option input { width: 16px; height: 16px; margin: 0; flex-shrink: 0; accent-color: var(--accent); }
+.facet-label { flex: 1; min-width: 0; }
+.facet-count { font-size: 13px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.facet-option:has(input:checked) .facet-label { font-weight: 600; }
+.facet-option:has(input:disabled) { color: var(--faint); cursor: default; }
+.facet-option:has(input:disabled):hover { background: none; }
+
+.facet-collapsible summary {
+  display: flex; align-items: center; gap: 8px; margin: 0; padding: 4px 0; cursor: pointer; list-style: none;
+}
+.facet-collapsible summary::-webkit-details-marker { display: none; }
+.facet-collapsible summary::after { content: "▸"; order: -1; color: var(--faint); transition: transform .15s; }
+.facet-collapsible[open] summary::after { transform: rotate(90deg); }
+.facet-collapsible summary span:first-child { flex: 1; }
+.facet-summary { font-weight: 500; color: var(--faint); max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.facet-collapsible[open] .facet-options { padding-top: 4px; max-height: 260px; overflow-y: auto; }
+
+.active-filters {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin-top: 10px;
+}
+.active-chip {
+  display: inline-flex; align-items: center; gap: 4px; max-width: 100%; padding: 4px 6px 4px 10px;
+  border: 0; border-radius: 999px; background: var(--accent-wash); color: var(--accent-ink); font-size: 13px; font-weight: 600;
+}
+.active-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.active-chip svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.active-chip:hover { background: #d6e4fb; }
+
+.cams .camera-list { margin-top: 14px; padding-top: 4px; border-top: 1px solid var(--line-soft); }
+.cam-empty { margin-top: 14px; padding: 18px 12px; border-radius: var(--radius); background: #f6f8fb; text-align: center; }
+.cam-empty p { margin: 0 0 6px; font-size: 14px; color: var(--muted); }
+.camera-group[hidden], .camera-row[hidden] { display: none; }

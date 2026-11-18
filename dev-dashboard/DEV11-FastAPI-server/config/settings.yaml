@@ -1,0 +1,29 @@
+# Nastavenia FlowSight API (DEV11). Cesty sú relatívne k priečinku DEV11-FastAPI-server.
+# Každá hodnota sa dá prepísať premennou prostredia, napr. FLOWSIGHT_QDRANT_URL=http://localhost:6333
+
+qdrant:
+  # Buď url (Qdrant server v Dockeri), alebo path (lokálny súbor ako v pipeline rd-research/02, QdrantClient(path=...)).
+  url: null
+  path: qdrant_data
+  # Rovnaké názvy kolekcií ako v pipeline (rd-research/02-multi-view-reid/detection_reid_rewrite.py)
+  collection_reid: vehicles_reid          # všetky pohľady na auto (pre vyhľadávanie)
+  collection_dashboard: vehicles_dashboard  # jedno auto = jeden bod s najlepším záberom
+  vector_size: 512
+
+# Odkiaľ sa servírujú zábery, na ktoré ukazujú frame_path / reid_crop_path v Qdrante
+media_dir: ../../data
+
+config_files:
+  cameras: config/cameras.yaml
+  parking: config/parking.yaml
+
+# Adresy, z ktorých môže frontend volať API (CORS). "*" = hocikto, na vývoj OK.
+cors_origins: ["*"]
+
+search:
+  default_top_k: 3
+  max_top_k: 20
+  max_upload_mb: 10
+
+# Časové pásmo pre „dnes“ v štatistikách
+timezone: Europe/Bratislava

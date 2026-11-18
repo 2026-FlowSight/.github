@@ -1,0 +1,283 @@
+# Parkoviská Pezinka – konfigurácia pre API (DEV11) a mapu (DEV12).
+# Polygóny sú z OpenStreetMap (amenity=parking). OSM nemá pri parkoviskách v Pezinku názvy,
+# preto sú pomenované podľa ulice alebo obchodu. capacity_source hovorí, odkiaľ je kapacita.
+# cameras = mestské kamery do 200 m, ktoré môžu parkovisko vidieť (pre DEV03).
+parking:
+- id: p-1
+  name: Parkovisko OC Mólo / Tesco
+  street: Myslenická
+  kind: obchodné centrum (pre zákazníkov, bezplatné)
+  capacity: 500
+  capacity_source: odhad z plochy
+  lat: 48.277444
+  lng: 17.25555
+  cameras: []
+  area_m2: 12510
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/5631003
+  polygon:
+  - [48.276855, 17.2548]
+  - [48.276715, 17.255088]
+  - [48.276838, 17.255275]
+  - [48.276916, 17.255531]
+  - [48.277954, 17.256649]
+  - [48.277996, 17.25656]
+  - [48.278148, 17.256724]
+  - [48.278508, 17.255979]
+  - [48.277443, 17.254887]
+  - [48.277391, 17.254883]
+  - [48.277335, 17.254995]
+  - [48.277225, 17.255228]
+  - [48.276855, 17.2548]
+- id: p-2
+  name: Parkovisko Kaufland
+  street: Obchodná
+  kind: obchodné centrum (pre zákazníkov, bezplatné)
+  capacity: 227
+  capacity_source: odhad z plochy
+  lat: 48.275946
+  lng: 17.253995
+  cameras: [msp-27]
+  area_m2: 5680
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/499455048
+  polygon:
+  - [48.275552, 17.253636]
+  - [48.275291, 17.254198]
+  - [48.275795, 17.254737]
+  - [48.275898, 17.254626]
+  - [48.276015, 17.254463]
+  - [48.276184, 17.254112]
+  - [48.276218, 17.253875]
+  - [48.276255, 17.253832]
+  - [48.276232, 17.253772]
+  - [48.276118, 17.253481]
+  - [48.276096, 17.253426]
+  - [48.275697, 17.253781]
+  - [48.275552, 17.253636]
+- id: p-3
+  name: Parkovisko Lidl (Obchodná)
+  street: Obchodná / Okružná
+  kind: obchodné centrum
+  capacity: 149
+  capacity_source: odhad z plochy
+  lat: 48.279098
+  lng: 17.256134
+  cameras: []
+  area_m2: 3710
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/27259834
+  polygon:
+  - [48.279106, 17.255804]
+  - [48.279212, 17.255585]
+  - [48.279251, 17.25565]
+  - [48.279302, 17.255526]
+  - [48.279318, 17.25555]
+  - [48.279384, 17.255707]
+  - [48.279424, 17.255857]
+  - [48.279308, 17.255927]
+  - [48.279458, 17.256577]
+  - [48.279072, 17.256787]
+  - [48.279021, 17.256753]
+  - [48.278976, 17.256599]
+  - [48.278991, 17.256547]
+  - [48.278961, 17.256541]
+  - [48.27878, 17.256504]
+  - [48.278572, 17.256274]
+  - [48.278655, 17.256103]
+  - [48.27892, 17.256395]
+  - [48.279159, 17.255863]
+  - [48.279106, 17.255804]
+- id: p-4
+  name: Parkovisko Lidl (Šenkvická cesta)
+  street: Šenkvická cesta
+  kind: obchodné centrum (pre zákazníkov, bezplatné)
+  capacity: 181
+  capacity_source: odhad z plochy
+  lat: 48.290819
+  lng: 17.279773
+  cameras: []
+  area_m2: 4530
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/1431054584
+  polygon:
+  - [48.29126, 17.279174]
+  - [48.291317, 17.27936]
+  - [48.29113, 17.279491]
+  - [48.291244, 17.27986]
+  - [48.290571, 17.28033]
+  - [48.29055, 17.280261]
+  - [48.290474, 17.280314]
+  - [48.290315, 17.279797]
+  - [48.290659, 17.279557]
+  - [48.290668, 17.279588]
+  - [48.29126, 17.279174]
+- id: p-5
+  name: Parkovisko P+R pri železničnej stanici
+  street: pri žel. stanici (južná strana trate)
+  kind: P+R, verejné
+  capacity: 291
+  capacity_source: 'publikované: TASR 25.4.2019 (projekt P+R, 291 miest); polygon = obal OSM plôch way/755409984-755409999, priradenie k projektu odvodené'
+  lat: 48.2819
+  lng: 17.271209
+  cameras: [msp-10, msp-9, msp-8]
+  area_m2: 7020
+  source: OpenStreetMap way/755409984-755409999 + teraz.sk (TASR)
+  polygon:
+  - [48.281821, 17.270596]
+  - [48.281379, 17.270852]
+  - [48.281357, 17.270991]
+  - [48.281875, 17.272137]
+  - [48.282357, 17.271742]
+  - [48.282397, 17.271702]
+  - [48.282108, 17.27105]
+  - [48.281903, 17.270602]
+  - [48.281821, 17.270596]
+- id: p-6
+  name: Parkovisko pri železničnej stanici
+  street: Holubyho / Jesenského
+  kind: verejné, pri stanici
+  capacity: 50
+  capacity_source: OpenStreetMap tag capacity
+  lat: 48.282375
+  lng: 17.269558
+  cameras: [msp-10, msp-9, msp-8]
+  area_m2: 910
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/338944323
+  polygon:
+  - [48.282288, 17.269161]
+  - [48.282579, 17.269848]
+  - [48.282464, 17.269953]
+  - [48.28217, 17.269271]
+  - [48.282288, 17.269161]
+- id: p-7
+  name: Parkovisko Za hradbami
+  street: Za hradbami / Hrnčiarska
+  kind: verejné, spoplatnené (širšie centrum)
+  capacity: 69
+  capacity_source: odhad z plochy
+  lat: 48.287492
+  lng: 17.265472
+  cameras: [msp-24, msp-25, msp-12]
+  area_m2: 1730
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/233732334
+  polygon:
+  - [48.287473, 17.264988]
+  - [48.287705, 17.265743]
+  - [48.287534, 17.266004]
+  - [48.287254, 17.265152]
+  - [48.287473, 17.264988]
+- id: p-8
+  name: Parkovisko Mladoboleslavská
+  street: Mladoboleslavská
+  kind: verejné (centrálna mestská zóna)
+  capacity: 104
+  capacity_source: odhad z plochy
+  lat: 48.289958
+  lng: 17.266844
+  cameras: [msp-5, msp-6]
+  area_m2: 2610
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/74976370
+  polygon:
+  - [48.289667, 17.266818]
+  - [48.289763, 17.266466]
+  - [48.289787, 17.266384]
+  - [48.289957, 17.266283]
+  - [48.289976, 17.266352]
+  - [48.290015, 17.266332]
+  - [48.290064, 17.266323]
+  - [48.290018, 17.266466]
+  - [48.290008, 17.266496]
+  - [48.289947, 17.266676]
+  - [48.289865, 17.266926]
+  - [48.289805, 17.267111]
+  - [48.290171, 17.267379]
+  - [48.290195, 17.267514]
+  - [48.290166, 17.267527]
+  - [48.290033, 17.267588]
+  - [48.289843, 17.267715]
+  - [48.289667, 17.266818]
+- id: p-9
+  name: Parkovisko pri Zámockom parku
+  street: Mladoboleslavská
+  kind: verejné, spoplatnené (centrálna mestská zóna)
+  capacity: 80
+  capacity_source: odhad z plochy
+  lat: 48.290532
+  lng: 17.266853
+  cameras: [msp-6, msp-5]
+  area_m2: 2000
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/7588459
+  polygon:
+  - [48.290727, 17.267188]
+  - [48.2904, 17.267252]
+  - [48.290336, 17.266518]
+  - [48.290664, 17.266454]
+  - [48.290727, 17.267188]
+- id: p-10
+  name: Parkovisko pri Trhovisku na Kupeckého
+  street: Kupeckého
+  kind: verejné, spoplatnené (širšie centrum)
+  capacity: 68
+  capacity_source: odhad z plochy
+  lat: 48.290788
+  lng: 17.264747
+  cameras: [msp-38]
+  area_m2: 1690
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/450136233
+  polygon:
+  - [48.290419, 17.265099]
+  - [48.290466, 17.2652]
+  - [48.291246, 17.264506]
+  - [48.291147, 17.264288]
+  - [48.290861, 17.264536]
+  - [48.290591, 17.264854]
+  - [48.290419, 17.265099]
+- id: p-11
+  name: Parkovisko Potočná
+  street: Potočná
+  kind: verejné, spoplatnené (centrálna mestská zóna)
+  capacity: 60
+  capacity_source: odhad z plochy
+  lat: 48.287561
+  lng: 17.268106
+  cameras: [msp-4, msp-12, msp-25]
+  area_m2: 1480
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/1203295459
+  polygon:
+  - [48.287591, 17.268583]
+  - [48.287534, 17.268639]
+  - [48.287317, 17.268133]
+  - [48.287323, 17.268038]
+  - [48.287357, 17.267967]
+  - [48.287667, 17.267671]
+  - [48.28769, 17.267725]
+  - [48.287745, 17.267679]
+  - [48.287832, 17.267867]
+  - [48.287678, 17.268014]
+  - [48.287654, 17.268006]
+  - [48.287534, 17.268121]
+  - [48.287512, 17.268268]
+  - [48.287524, 17.268299]
+  - [48.287516, 17.268307]
+  - [48.287505, 17.268387]
+  - [48.287591, 17.268583]
+- id: p-12
+  name: Parkovisko L. Novomeského (sídlisko Sever)
+  street: L. Novomeského
+  kind: sídliskové, verejné
+  capacity: 111
+  capacity_source: odhad z plochy
+  lat: 48.298859
+  lng: 17.268449
+  cameras: [msp-17, msp-18]
+  area_m2: 2770
+  source: OpenStreetMap (Overpass, overpass.kumi.systems), way/1451074881
+  polygon:
+  - [48.298445, 17.268003]
+  - [48.299316, 17.268401]
+  - [48.299343, 17.268497]
+  - [48.299299, 17.268747]
+  - [48.299194, 17.268772]
+  - [48.299115, 17.268705]
+  - [48.298664, 17.26846]
+  - [48.298432, 17.268332]
+  - [48.29839, 17.2683]
+  - [48.298388, 17.268269]
+  - [48.298445, 17.268003]

@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+.pytest_cache/
+# lokálna demo databáza – vytvorí ju scripts/seed_qdrant.py
+qdrant_data/

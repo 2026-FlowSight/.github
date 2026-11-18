@@ -1,0 +1,757 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.2548,
+       48.276855
+      ],
+      [
+       17.255088,
+       48.276715
+      ],
+      [
+       17.255275,
+       48.276838
+      ],
+      [
+       17.255531,
+       48.276916
+      ],
+      [
+       17.256649,
+       48.277954
+      ],
+      [
+       17.25656,
+       48.277996
+      ],
+      [
+       17.256724,
+       48.278148
+      ],
+      [
+       17.255979,
+       48.278508
+      ],
+      [
+       17.254887,
+       48.277443
+      ],
+      [
+       17.254883,
+       48.277391
+      ],
+      [
+       17.254995,
+       48.277335
+      ],
+      [
+       17.255228,
+       48.277225
+      ],
+      [
+       17.2548,
+       48.276855
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko OC Mólo / Tesco",
+    "capacity": 500,
+    "capacity_source": "odhad z plochy",
+    "street": "Myslenická",
+    "kind": "obchodné centrum (pre zákazníkov, bezplatné)",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/5631003"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.253636,
+       48.275552
+      ],
+      [
+       17.254198,
+       48.275291
+      ],
+      [
+       17.254737,
+       48.275795
+      ],
+      [
+       17.254626,
+       48.275898
+      ],
+      [
+       17.254463,
+       48.276015
+      ],
+      [
+       17.254112,
+       48.276184
+      ],
+      [
+       17.253875,
+       48.276218
+      ],
+      [
+       17.253832,
+       48.276255
+      ],
+      [
+       17.253772,
+       48.276232
+      ],
+      [
+       17.253481,
+       48.276118
+      ],
+      [
+       17.253426,
+       48.276096
+      ],
+      [
+       17.253781,
+       48.275697
+      ],
+      [
+       17.253636,
+       48.275552
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko Kaufland",
+    "capacity": 227,
+    "capacity_source": "odhad z plochy",
+    "street": "Obchodná",
+    "kind": "obchodné centrum (pre zákazníkov, bezplatné)",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/499455048"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.255804,
+       48.279106
+      ],
+      [
+       17.255585,
+       48.279212
+      ],
+      [
+       17.25565,
+       48.279251
+      ],
+      [
+       17.255526,
+       48.279302
+      ],
+      [
+       17.25555,
+       48.279318
+      ],
+      [
+       17.255707,
+       48.279384
+      ],
+      [
+       17.255857,
+       48.279424
+      ],
+      [
+       17.255927,
+       48.279308
+      ],
+      [
+       17.256577,
+       48.279458
+      ],
+      [
+       17.256787,
+       48.279072
+      ],
+      [
+       17.256753,
+       48.279021
+      ],
+      [
+       17.256599,
+       48.278976
+      ],
+      [
+       17.256547,
+       48.278991
+      ],
+      [
+       17.256541,
+       48.278961
+      ],
+      [
+       17.256504,
+       48.27878
+      ],
+      [
+       17.256274,
+       48.278572
+      ],
+      [
+       17.256103,
+       48.278655
+      ],
+      [
+       17.256395,
+       48.27892
+      ],
+      [
+       17.255863,
+       48.279159
+      ],
+      [
+       17.255804,
+       48.279106
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko Lidl (Obchodná)",
+    "capacity": 149,
+    "capacity_source": "odhad z plochy",
+    "street": "Obchodná / Okružná",
+    "kind": "obchodné centrum",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/27259834"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.279174,
+       48.29126
+      ],
+      [
+       17.27936,
+       48.291317
+      ],
+      [
+       17.279491,
+       48.29113
+      ],
+      [
+       17.27986,
+       48.291244
+      ],
+      [
+       17.28033,
+       48.290571
+      ],
+      [
+       17.280261,
+       48.29055
+      ],
+      [
+       17.280314,
+       48.290474
+      ],
+      [
+       17.279797,
+       48.290315
+      ],
+      [
+       17.279557,
+       48.290659
+      ],
+      [
+       17.279588,
+       48.290668
+      ],
+      [
+       17.279174,
+       48.29126
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko Lidl (Šenkvická cesta)",
+    "capacity": 181,
+    "capacity_source": "odhad z plochy",
+    "street": "Šenkvická cesta",
+    "kind": "obchodné centrum (pre zákazníkov, bezplatné)",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/1431054584"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.270596,
+       48.281821
+      ],
+      [
+       17.270852,
+       48.281379
+      ],
+      [
+       17.270991,
+       48.281357
+      ],
+      [
+       17.272137,
+       48.281875
+      ],
+      [
+       17.271742,
+       48.282357
+      ],
+      [
+       17.271702,
+       48.282397
+      ],
+      [
+       17.27105,
+       48.282108
+      ],
+      [
+       17.270602,
+       48.281903
+      ],
+      [
+       17.270596,
+       48.281821
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko P+R pri železničnej stanici",
+    "capacity": 291,
+    "capacity_source": "publikované: TASR 25.4.2019 (projekt P+R, 291 miest); polygon = obal OSM plôch way/755409984-755409999, priradenie k projektu odvodené",
+    "street": "pri žel. stanici (južná strana trate)",
+    "kind": "P+R, verejné",
+    "source": "OpenStreetMap way/755409984-755409999 + teraz.sk (TASR)"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.269161,
+       48.282288
+      ],
+      [
+       17.269848,
+       48.282579
+      ],
+      [
+       17.269953,
+       48.282464
+      ],
+      [
+       17.269271,
+       48.28217
+      ],
+      [
+       17.269161,
+       48.282288
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko pri železničnej stanici",
+    "capacity": 50,
+    "capacity_source": "OpenStreetMap tag capacity",
+    "street": "Holubyho / Jesenského",
+    "kind": "verejné, pri stanici",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/338944323"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.264988,
+       48.287473
+      ],
+      [
+       17.265743,
+       48.287705
+      ],
+      [
+       17.266004,
+       48.287534
+      ],
+      [
+       17.265152,
+       48.287254
+      ],
+      [
+       17.264988,
+       48.287473
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko Za hradbami",
+    "capacity": 69,
+    "capacity_source": "odhad z plochy",
+    "street": "Za hradbami / Hrnčiarska",
+    "kind": "verejné, spoplatnené (širšie centrum)",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/233732334"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.266818,
+       48.289667
+      ],
+      [
+       17.266466,
+       48.289763
+      ],
+      [
+       17.266384,
+       48.289787
+      ],
+      [
+       17.266283,
+       48.289957
+      ],
+      [
+       17.266352,
+       48.289976
+      ],
+      [
+       17.266332,
+       48.290015
+      ],
+      [
+       17.266323,
+       48.290064
+      ],
+      [
+       17.266466,
+       48.290018
+      ],
+      [
+       17.266496,
+       48.290008
+      ],
+      [
+       17.266676,
+       48.289947
+      ],
+      [
+       17.266926,
+       48.289865
+      ],
+      [
+       17.267111,
+       48.289805
+      ],
+      [
+       17.267379,
+       48.290171
+      ],
+      [
+       17.267514,
+       48.290195
+      ],
+      [
+       17.267527,
+       48.290166
+      ],
+      [
+       17.267588,
+       48.290033
+      ],
+      [
+       17.267715,
+       48.289843
+      ],
+      [
+       17.266818,
+       48.289667
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko Mladoboleslavská",
+    "capacity": 104,
+    "capacity_source": "odhad z plochy",
+    "street": "Mladoboleslavská",
+    "kind": "verejné (centrálna mestská zóna)",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/74976370"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.267188,
+       48.290727
+      ],
+      [
+       17.267252,
+       48.2904
+      ],
+      [
+       17.266518,
+       48.290336
+      ],
+      [
+       17.266454,
+       48.290664
+      ],
+      [
+       17.267188,
+       48.290727
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko pri Zámockom parku",
+    "capacity": 80,
+    "capacity_source": "odhad z plochy",
+    "street": "Mladoboleslavská",
+    "kind": "verejné, spoplatnené (centrálna mestská zóna)",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/7588459"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.265099,
+       48.290419
+      ],
+      [
+       17.2652,
+       48.290466
+      ],
+      [
+       17.264506,
+       48.291246
+      ],
+      [
+       17.264288,
+       48.291147
+      ],
+      [
+       17.264536,
+       48.290861
+      ],
+      [
+       17.264854,
+       48.290591
+      ],
+      [
+       17.265099,
+       48.290419
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko pri Trhovisku na Kupeckého",
+    "capacity": 68,
+    "capacity_source": "odhad z plochy",
+    "street": "Kupeckého",
+    "kind": "verejné, spoplatnené (širšie centrum)",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/450136233"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.268583,
+       48.287591
+      ],
+      [
+       17.268639,
+       48.287534
+      ],
+      [
+       17.268133,
+       48.287317
+      ],
+      [
+       17.268038,
+       48.287323
+      ],
+      [
+       17.267967,
+       48.287357
+      ],
+      [
+       17.267671,
+       48.287667
+      ],
+      [
+       17.267725,
+       48.28769
+      ],
+      [
+       17.267679,
+       48.287745
+      ],
+      [
+       17.267867,
+       48.287832
+      ],
+      [
+       17.268014,
+       48.287678
+      ],
+      [
+       17.268006,
+       48.287654
+      ],
+      [
+       17.268121,
+       48.287534
+      ],
+      [
+       17.268268,
+       48.287512
+      ],
+      [
+       17.268299,
+       48.287524
+      ],
+      [
+       17.268307,
+       48.287516
+      ],
+      [
+       17.268387,
+       48.287505
+      ],
+      [
+       17.268583,
+       48.287591
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko Potočná",
+    "capacity": 60,
+    "capacity_source": "odhad z plochy",
+    "street": "Potočná",
+    "kind": "verejné, spoplatnené (centrálna mestská zóna)",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/1203295459"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       17.268003,
+       48.298445
+      ],
+      [
+       17.268401,
+       48.299316
+      ],
+      [
+       17.268497,
+       48.299343
+      ],
+      [
+       17.268747,
+       48.299299
+      ],
+      [
+       17.268772,
+       48.299194
+      ],
+      [
+       17.268705,
+       48.299115
+      ],
+      [
+       17.26846,
+       48.298664
+      ],
+      [
+       17.268332,
+       48.298432
+      ],
+      [
+       17.2683,
+       48.29839
+      ],
+      [
+       17.268269,
+       48.298388
+      ],
+      [
+       17.268003,
+       48.298445
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "name": "Parkovisko L. Novomeského (sídlisko Sever)",
+    "capacity": 111,
+    "capacity_source": "odhad z plochy",
+    "street": "L. Novomeského",
+    "kind": "sídliskové, verejné",
+    "source": "OpenStreetMap (Overpass, overpass.kumi.systems), way/1451074881"
+   }
+  }
+ ]
+}

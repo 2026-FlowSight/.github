@@ -1,0 +1,456 @@
+# Mestské kamery Pezinok – konfigurácia pre API (DEV11) a mapu (DEV12).
+# Zdroj: Mestská polícia Pezinok, „Mestský kamerový systém Pezinok 2024“.
+# Súradnice nie sú v dokumente – sú odhadnuté z OpenStreetMap (pole precision).
+# Novú kameru pridáš novou položkou; id musí byť unikátne a rovnaké ako `camera` v Qdrante.
+cameras:
+- id: msp-1
+  'no': '1'
+  name: Kamera 1 – Holubyho
+  area: Centrum
+  street: Križovatka Holubyho / Radničné námestie
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.286124
+  lng: 17.26907
+  precision: križovatka
+- id: msp-2
+  'no': '2'
+  name: Kamera 2 – Radničné námestie
+  area: Centrum
+  street: Budova mestského úradu
+  type: otočná
+  mount: budova
+  site: ulica
+  lat: 48.28584
+  lng: 17.27005
+  precision: budova
+- id: msp-3
+  'no': '3'
+  name: Kamera 3 – Kollárova
+  area: Centrum
+  street: Stĺp mestských hodín, Kollárova
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.286607
+  lng: 17.270779
+  precision: približne
+- id: msp-4
+  'no': '4'
+  name: Kamera 4 – Fortna
+  area: Centrum
+  street: Samostatný stĺp, Holubyho
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.28792
+  lng: 17.267286
+  precision: križovatka
+- id: msp-5
+  'no': '5'
+  name: Kamera 5 – Mladoboleslavská
+  area: Centrum
+  street: Kruhový objazd Holubyho / Mladoboleslavská
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.289127
+  lng: 17.266633
+  precision: križovatka
+- id: msp-6
+  'no': '6'
+  name: Kamera 6 – Zámocký park
+  area: Centrum
+  street: Vchod do Zámockého parku, Mladoboleslavská / M. R. Štefánika
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.289917
+  lng: 17.268525
+  precision: križovatka
+- id: msp-7
+  'no': '7'
+  name: Kamera 7 – Panoráma
+  area: Centrum
+  street: Križovatka Moyzesova / Kollárova
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.284892
+  lng: 17.271806
+  precision: križovatka
+- id: msp-8
+  'no': '8'
+  name: Kamera 8 – Terminál Tabak
+  area: Centrum
+  street: Vchod na železničnú stanicu, Holubyho
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.283121
+  lng: 17.270412
+  precision: približne
+- id: msp-9
+  'no': '9'
+  name: Kamera 9 – Terminál aut. zastávka
+  area: Centrum
+  street: Železničná stanica, Holubyho
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.28254
+  lng: 17.27038
+  precision: približne
+- id: msp-10
+  'no': '10'
+  name: Kamera 10 – Terminál bicykle
+  area: Centrum
+  street: Železničná stanica, Holubyho
+  type: statická
+  mount: stĺp
+  site: ulica
+  lat: 48.28238
+  lng: 17.27038
+  precision: približne
+- id: msp-11
+  'no': '11'
+  name: Kamera 11 – Moyzesova
+  area: Centrum
+  street: Križovatka Moyzesova / Kollárova
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.284732
+  lng: 17.271806
+  precision: križovatka
+- id: msp-12
+  'no': '12'
+  name: Kamera 12 – Katová ulička
+  area: Centrum
+  street: Ulička Fortna
+  type: statická
+  mount: stĺp
+  site: ulica
+  lat: 48.287901
+  lng: 17.267219
+  precision: približne
+- id: msp-33
+  'no': '33'
+  name: Kamera 33 – MsÚ
+  area: Centrum
+  street: Budova MsÚ Pezinok
+  type: otočná
+  mount: budova
+  site: ulica
+  lat: 48.28568
+  lng: 17.27005
+  precision: budova
+- id: msp-38
+  'no': '38'
+  name: Kamera 38 – Trhovisko
+  area: Centrum
+  street: Pri trhovisku
+  type: otočná
+  mount: neuvedené
+  site: ulica
+  lat: 48.29177
+  lng: 17.26393
+  precision: budova
+- id: msp-13
+  'no': '13'
+  name: Kamera 13 – Na bielenisku
+  area: Sever
+  street: Samostatný stĺp na Bielenisku pri SBD
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.295016
+  lng: 17.265955
+  precision: približne
+- id: msp-14
+  'no': '14'
+  name: Kamera 14 – Svätoplukova
+  area: Sever
+  street: Výmenníková stanica, Svätoplukova 6
+  type: otočná
+  mount: budova
+  site: ulica
+  lat: 48.2972
+  lng: 17.26579
+  precision: adresa
+- id: msp-15
+  'no': '15'
+  name: Kamera 15 – Pekáreň
+  area: Sever
+  street: Výmenníková stanica, Svätoplukova 6
+  type: statická
+  mount: budova
+  site: ulica
+  lat: 48.29704
+  lng: 17.26579
+  precision: adresa
+- id: msp-16
+  'no': '16'
+  name: Kamera 16 – Terezka pub
+  area: Sever
+  street: Stĺp verejného osvetlenia, Svätoplukova 11
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.29716
+  lng: 17.26495
+  precision: adresa
+- id: msp-17
+  'no': '17'
+  name: Kamera 17 – Otočisko bus
+  area: Sever
+  street: Výmenníková stanica, Svätoplukova
+  type: otočná
+  mount: budova
+  site: ulica
+  lat: 48.299796
+  lng: 17.266365
+  precision: približne
+- id: msp-18
+  'no': '18'
+  name: Kamera 18 – Novomeského CBA
+  area: Sever
+  street: Výmenníková stanica, Svätoplukova
+  type: otočná
+  mount: budova
+  site: ulica
+  lat: 48.299964
+  lng: 17.266463
+  precision: približne
+- id: msp-19
+  'no': '19'
+  name: Kamera 19 – Suvorovova
+  area: Sever
+  street: Výmenníková stanica, Svätoplukova
+  type: otočná
+  mount: budova
+  site: ulica
+  lat: 48.296229
+  lng: 17.264105
+  precision: približne
+- id: msp-20
+  'no': '20'
+  name: Kamera 20 – Gen. Pekníka
+  area: Muškát
+  street: Stĺp verejného osvetlenia, Gen. Pekníka
+  type: statická
+  mount: stĺp
+  site: ulica
+  lat: 48.295007
+  lng: 17.272419
+  precision: približne
+- id: msp-21
+  'no': '21'
+  name: Kamera 21 – Trnavská Tabak
+  area: Muškát
+  street: Križovatka Trnavská / Gen. Pekníka
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.294535
+  lng: 17.274322
+  precision: križovatka
+- id: msp-22
+  'no': '22'
+  name: Kamera 22 – Trnavská aut. zastávka
+  area: Muškát
+  street: Križovatka Trnavská / Hroznová
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.295617
+  lng: 17.275326
+  precision: križovatka
+- id: msp-23
+  'no': '23'
+  name: Kamera 23 – Silvánová
+  area: Muškát
+  street: Križovatka Silvánová / Muškátová
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.294693
+  lng: 17.276859
+  precision: križovatka
+- id: msp-24
+  'no': '24'
+  name: Kamera 24 – Hrnčiarska
+  area: Juh
+  street: Križovatka Hrnčiarska / Fortna
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.287512
+  lng: 17.266235
+  precision: križovatka
+- id: msp-25
+  'no': '25'
+  name: Kamera 25 – Za hradbami
+  area: Juh
+  street: Parkovisko Hrnčiarska / Za hradbami
+  type: statická
+  mount: stĺp
+  site: ulica
+  lat: 48.28727
+  lng: 17.266359
+  precision: križovatka
+- id: msp-26
+  'no': '26'
+  name: Kamera 26 – ZŠ Fándlyho
+  area: Juh
+  street: Budova telocvične ZŠ Fándlyho
+  type: statická
+  mount: budova
+  site: areál
+  lat: 48.28426
+  lng: 17.25991
+  precision: budova
+- id: msp-34
+  'no': '34'
+  name: Kamera 34 – Komenského
+  area: Juh
+  street: Stĺp verejného osvetlenia, Komenského
+  type: otočná
+  mount: stĺp
+  site: ulica
+  lat: 48.284374
+  lng: 17.256929
+  precision: približne
+- id: msp-35
+  'no': '35'
+  name: Kamera 35 – Plaváreň
+  area: Juh
+  street: Budova plavárne
+  type: statická
+  mount: budova
+  site: ulica
+  lat: 48.28406
+  lng: 17.256
+  precision: budova
+- id: msp-27
+  'no': '27'
+  name: Kamera 27 – Glejovka
+  area: Grinava
+  street: Areál futbalového ihriska Grinava, Myslenická
+  type: otočná
+  mount: stĺp
+  site: areál
+  lat: 48.27455
+  lng: 17.25555
+  precision: približne
+- id: msp-28
+  'no': '28'
+  name: Kamera 28 – Regena
+  area: Grinava
+  street: Areál Regena v Glejovke, Myslenická
+  type: otočná
+  mount: stĺp
+  site: areál
+  lat: 48.273717
+  lng: 17.260032
+  precision: približne
+- id: msp-29
+  'no': '29'
+  name: Kamera 29 – Karanténna
+  area: Karanténna a odchytová stanica
+  street: Zberný dvor, Fajgalská cesta
+  type: statická
+  mount: budova
+  site: areál
+  lat: 48.29
+  lng: 17.24935
+  precision: približne
+- id: msp-30
+  'no': '30'
+  name: Kamera 30 – Zberný dvor
+  area: Karanténna a odchytová stanica
+  street: Zberný dvor, Fajgalská cesta
+  type: statická
+  mount: budova
+  site: areál
+  lat: 48.28984
+  lng: 17.24935
+  precision: približne
+- id: msp-31
+  'no': '31'
+  name: Kamera 31 – Kupeckého 1
+  area: ZŠ Kupeckého
+  street: Telocvičňa ZŠ Jána Kupeckého
+  type: statická
+  mount: budova
+  site: areál
+  lat: 48.29449
+  lng: 17.26371
+  precision: budova
+- id: msp-32
+  'no': '32'
+  name: Kamera 32 – Kupeckého 2
+  area: ZŠ Kupeckého
+  street: Telocvičňa ZŠ Jána Kupeckého
+  type: statická
+  mount: budova
+  site: areál
+  lat: 48.29433
+  lng: 17.26371
+  precision: budova
+- id: msp-36
+  'no': '36'
+  name: Kamera 36 – Gorkého
+  area: Starý Dvor
+  street: Bytový dom, Gorkého 12
+  type: otočná
+  mount: budova
+  site: ulica
+  lat: 48.28843
+  lng: 17.25484
+  precision: adresa
+- id: msp-37
+  'no': '37'
+  name: Kamera 37 – Puškinova
+  area: Starý Dvor
+  street: Bytový dom, Gorkého 12
+  type: statická
+  mount: budova
+  site: ulica
+  lat: 48.28827
+  lng: 17.25484
+  precision: adresa
+- id: msp-z2
+  'no': Z2
+  name: Zumberská – vchod
+  area: Nájomné byty Zumberská
+  street: Stĺp verejného osvetlenia, Zumberská
+  type: statická
+  mount: stĺp
+  site: areál
+  lat: 48.31494
+  lng: 17.25698
+  precision: približne
+- id: msp-z3
+  'no': Z3
+  name: Zumberská – parkovisko
+  area: Nájomné byty Zumberská
+  street: Stĺp verejného osvetlenia, Zumberská
+  type: statická
+  mount: stĺp
+  site: areál
+  lat: 48.31482
+  lng: 17.257084
+  precision: približne
+- id: msp-z4
+  'no': Z4
+  name: Zumberská – dvor
+  area: Nájomné byty Zumberská
+  street: Telekomunikačný stĺp, Zumberská
+  type: statická
+  mount: stĺp
+  site: areál
+  lat: 48.31482
+  lng: 17.256876
+  precision: približne

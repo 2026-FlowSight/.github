@@ -2,90 +2,111 @@
 <html lang="sk">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<title>FlowSight · Mapa Pezinka</title>
+<title>Mapa mesta Pezinok · FlowSight</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@87.5..100,400..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="styles.css?v=20261116j">
-<link rel="stylesheet" href="map.css?v=20261116j">
+<link rel="stylesheet" href="map.css?v=7">
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script defer src="data/cameras.js?v=20261116j"></script>
-<script defer src="data/pezinok-layers.js?v=20261116j"></script>
-<script defer src="map.js?v=20261116j"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+<script defer src="data/pezinok-layers.js?v=7"></script>
+<script defer src="api.js?v=7"></script>
+<script defer src="map.js?v=7"></script>
 </head>
-<body class="map-page">
-<svg class="icon-library" aria-hidden="true"><defs>
- <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8.5h11v8H3z"/><path d="m14 11 6-3v9l-6-3"/><path d="M6 16.5 5 20m6-3.5 1 3.5"/></symbol>
- <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></symbol>
- <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></symbol>
+<body>
+<svg class="sprite" aria-hidden="true"><defs>
+ <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3.5 8.5h10.5v7.5H3.5z"/><path d="m14 10.6 5.5-2.6v8.5L14 13.9"/></symbol>
+ <symbol id="i-parking" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M10 16.5v-9h3.2a2.8 2.8 0 0 1 0 5.6H10"/></symbol>
+ <symbol id="i-boundary" viewBox="0 0 24 24"><path d="M12 3 4.5 6v6c0 4.4 3.2 7.9 7.5 9 4.3-1.1 7.5-4.6 7.5-9V6z" stroke-dasharray="3 2.6"/></symbol>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.5 15.5 4.5 4.5"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11m0-11-11 11"/></symbol>
+ <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.5v13M5.5 12h13"/></symbol>
+ <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5.5 12h13"/></symbol>
+ <symbol id="i-home" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.2"/><path d="M12 2.5v3m0 13v3M2.5 12h3m13 0h3"/></symbol>
+ <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.2m0-8.4v.2"/></symbol>
+ <symbol id="i-play" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="m10.5 9.5 4 2.5-4 2.5z"/></symbol>
 </defs></svg>
 
-<header class="appbar">
- <a class="brand" href="../DEV13-db-search-frontend/index.html" aria-label="FlowSight Pezinok">
-  <svg class="brand-mark" viewBox="0 0 32 36" aria-hidden="true"><path d="M3 3h26v15c0 8-6 13.5-13 15C9 31.5 3 26 3 18Z"/><circle cx="16" cy="16" r="5.2"/><circle cx="16" cy="16" r="1.6"/></svg>
-  <span class="brand-name">FlowSight</span><span class="brand-city">Pezinok</span>
+<header class="topbar">
+ <a class="brand" href="mapa.html" aria-label="FlowSight – mapa mesta Pezinok">
+  <svg class="crest" viewBox="0 0 40 46" aria-hidden="true">
+   <path class="crest-shield" d="M3 3h34v19c0 11.2-7.4 18.6-17 21C10.4 40.6 3 33.2 3 22z"/>
+   <path class="crest-tower" d="M13 33V18.5h-1.6v-4.2h2.6v2h2.3v-2h2.4v2H21v-2h2.4v2h2.3v-2h2.6v4.2h-1.6V33z"/>
+   <path class="crest-gate" d="M17.6 33v-4.6a2.4 2.4 0 0 1 4.8 0V33z"/>
+  </svg>
+  <span class="brand-text"><b>Mapa mesta Pezinok</b><small>FlowSight · kamery a parkoviská</small></span>
  </a>
- <nav class="modules" aria-label="Moduly dashboardu">
-  <a class="module is-current" href="mapa.html" aria-current="page">Mapa</a>
-  <a class="module" href="../DEV13-db-search-frontend/udalosti.html">Udalosti</a>
-  <span class="module" aria-disabled="true" title="Pripravuje sa">Štatistiky</span>
-  <span class="module" aria-disabled="true" title="Pripravuje sa">Kamery</span>
-  <a class="module" href="../DEV13-db-search-frontend/index.html">Vyhľadávanie</a>
+ <nav class="nav" aria-label="Moduly">
+  <a href="mapa.html" aria-current="page">Mapa</a>
+  <a href="../DEV13-db-search-frontend/udalosti.html">Udalosti</a>
+  <a id="nav-search" href="../DEV13-db-search-frontend/index.html">Vyhľadávanie</a>
  </nav>
- <span class="mode-pill" data-mode="pending" title="Zoznam kamier podľa Mestskej polície Pezinok (2024), polohy sú odhadnuté z OpenStreetMap. Živý obraz zatiaľ nie je pripojený."><i></i><span>41 mestských kamier</span></span>
+ <div id="fresh" class="fresh" data-state="loading" role="status" aria-live="polite"><i></i><span>Načítavam…</span></div>
 </header>
 
-<div class="map-layout">
- <aside class="map-side">
-  <section class="panel side-block" aria-labelledby="layers-title">
-   <h2 id="layers-title">Vrstvy na mape</h2>
-   <div class="layer-list">
-    <label class="layer"><input type="checkbox" data-layer="cameras" checked><span class="swatch swatch-camera"></span><span>Mestské kamery</span></label>
-    <label class="layer"><input type="checkbox" data-layer="lots" checked><span class="swatch swatch-lot"></span><span>Odstavné plochy</span></label>
-    <label class="layer"><input type="checkbox" data-layer="zones"><span class="swatch swatch-zone"></span><span>Parkovacie zóny</span></label>
-    <label class="layer"><input type="checkbox" data-layer="boundary" checked><span class="swatch swatch-boundary"></span><span>Hranica mesta</span></label>
-   </div>
+<main class="app">
+ <aside class="side" aria-label="Kamery a parkoviská">
+  <label class="search">
+   <svg aria-hidden="true"><use href="#i-search"/></svg>
+   <input id="q" type="search" placeholder="Hľadať kameru alebo parkovisko…" autocomplete="off" spellcheck="false" aria-label="Hľadať kameru, ulicu alebo parkovisko">
+   <kbd aria-hidden="true">/</kbd>
+  </label>
+
+  <section class="card layers" aria-labelledby="layers-h">
+   <h2 id="layers-h">Vrstvy na mape</h2>
+   <label class="layer"><span class="layer-ico is-cam"><svg><use href="#i-camera"/></svg></span><span class="layer-name">Kamery</span><input type="checkbox" class="switch" data-layer="cameras" checked></label>
+   <label class="layer"><span class="layer-ico is-park"><svg><use href="#i-parking"/></svg></span><span class="layer-name">Parkoviská</span><input type="checkbox" class="switch" data-layer="parking" checked></label>
+   <label class="layer"><span class="layer-ico is-bound"><svg><use href="#i-boundary"/></svg></span><span class="layer-name">Hranica mesta</span><input type="checkbox" class="switch" data-layer="boundary" checked></label>
   </section>
 
-  <section class="panel side-block cams" aria-labelledby="cams-title">
-   <div class="side-head"><h2 id="cams-title">Kamery</h2><span id="cam-count" class="count" role="status" aria-live="polite"></span></div>
+  <section class="card browser" aria-label="Zoznam kamier a parkovísk">
+   <div class="tabs" role="tablist">
+    <button role="tab" id="tab-cameras" data-tab="cameras" aria-controls="panel-cameras" aria-selected="true">Kamery <span id="tc-cameras">–</span></button>
+    <button role="tab" id="tab-parking" data-tab="parking" aria-controls="panel-parking" aria-selected="false" tabindex="-1">Parkoviská <span id="tc-parking">–</span></button>
+   </div>
 
-   <label class="cam-search">
-    <svg aria-hidden="true"><use href="#i-search"/></svg>
-    <input id="cam-query" type="search" placeholder="Číslo kamery alebo ulica" aria-label="Hľadať kameru podľa čísla alebo ulice" autocomplete="off">
-   </label>
-   <div id="active-filters" class="active-filters" hidden></div>
+   <div id="panel-cameras" role="tabpanel" aria-labelledby="tab-cameras" class="panel">
+    <div class="chips" id="status-chips">
+     <button class="chip" data-status="online" aria-pressed="false"><i class="dot is-online"></i>Online <b>–</b></button>
+     <button class="chip" data-status="warning" aria-pressed="false"><i class="dot is-warning"></i>Podozrivé <b>–</b></button>
+     <button class="chip" data-status="offline" aria-pressed="false"><i class="dot is-offline"></i>Offline <b>–</b></button>
+    </div>
+    <p class="hidden-note" data-for="cameras" hidden>Vrstva kamier je skrytá. <button class="link" data-show="cameras">Zobraziť</button></p>
+    <ul class="list" id="list-cameras" aria-label="Kamery"></ul>
+   </div>
 
-   <fieldset class="facet">
-    <legend>Typ</legend>
-    <div class="segmented" id="facet-type"></div>
-   </fieldset>
-
-   <fieldset class="facet">
-    <legend>Umiestnenie</legend>
-    <div class="facet-options" id="facet-place"></div>
-   </fieldset>
-
-   <details class="facet facet-collapsible" id="facet-area-box">
-    <summary><span>Časť mesta</span><span id="facet-area-summary" class="facet-summary">všetky</span></summary>
-    <div class="facet-options" id="facet-area"></div>
-   </details>
-
-   <ul id="camera-list" class="camera-list"></ul>
-   <div id="cam-empty" class="cam-empty" hidden>
-    <p>Filtrom nevyhovuje žiadna kamera.</p>
-    <button type="button" class="link-button" data-clear>Vymazať filtre</button>
+   <div id="panel-parking" role="tabpanel" aria-labelledby="tab-parking" class="panel" hidden>
+    <div class="chips">
+     <button class="chip" data-level="free" aria-pressed="false" title="Obsadené menej ako 60 %"><i class="dot is-online"></i>Voľné <b>–</b></button>
+     <button class="chip" data-level="busy" aria-pressed="false" title="Obsadené 60 – 85 %"><i class="dot is-warning"></i>Takmer plné <b>–</b></button>
+     <button class="chip" data-level="full" aria-pressed="false" title="Obsadené viac ako 85 %"><i class="dot is-offline"></i>Plné <b>–</b></button>
+    </div>
+    <div class="list-head">
+     <span id="park-summary" class="muted"></span>
+     <label class="sort"><span class="sr">Zoradiť</span>
+      <select id="park-sort" aria-label="Zoradiť parkoviská"><option value="free">Najviac voľných</option><option value="name">Podľa názvu</option></select>
+     </label>
+    </div>
+    <p class="hidden-note" data-for="parking" hidden>Vrstva parkovísk je skrytá. <button class="link" data-show="parking">Zobraziť</button></p>
+    <ul class="list" id="list-parking" aria-label="Parkoviská"></ul>
+    <p class="list-foot" id="park-updated"></p>
    </div>
   </section>
  </aside>
 
- <section class="map-wrap panel" aria-label="Mapa mesta Pezinok">
-  <div id="map" class="map"></div>
-  <p id="map-error" class="map-error" role="alert" hidden>Mapový podklad sa nenačítal. Skontrolujte pripojenie na internet.</p>
+ <section class="mapbox" aria-label="Mapa Pezinka">
+  <div id="map"></div>
+  <div class="controls">
+   <button id="zoom-in" title="Priblížiť" aria-label="Priblížiť"><svg><use href="#i-plus"/></svg></button>
+   <button id="zoom-out" title="Oddialiť" aria-label="Oddialiť"><svg><use href="#i-minus"/></svg></button>
+   <button id="fit" title="Celý Pezinok" aria-label="Zobraziť celý Pezinok"><svg><use href="#i-home"/></svg></button>
+  </div>
+  <div id="banner" class="banner" role="alert" hidden></div>
  </section>
-</div>
+</main>
 </body>
 </html>

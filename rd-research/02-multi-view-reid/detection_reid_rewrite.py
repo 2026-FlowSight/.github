@@ -22,6 +22,8 @@ from ultralytics.utils.ops import xyxy2xywh
 DET_CONF_THRES = 0.20
 video_stride = 2 #video video_stride (real fps = orig fps / video_stride), video_stride=2 means taking every 2nd frame
 
+print("heloo stride",video_stride)
+
 #frames priečinok
 os.makedirs("frames", exist_ok=True)
 os.makedirs("crops", exist_ok=True)
@@ -87,6 +89,12 @@ args = SimpleNamespace(
 )
 tracker = BYTETracker(args)
 
+#ostrosť obrazu
+def laplacian_score(img):
+    if img.size == 0: return 0.0
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    return cv2.Laplacian(gray, cv2.CV_64F).var()
+
 #načítanie snímkov
 def load_frames(video_path, max_frames=None, video_stride=1):
     cap = cv2.VideoCapture(video_path)
@@ -110,13 +118,17 @@ def load_frames(video_path, max_frames=None, video_stride=1):
     return frames, fps / video_stride
 
 
-def save_vehicle_view(original_id, embedding, clean_frame, bx1, by1, bx2, by2, slot_name, area, w_img, h_img):
+def save_vehicle_view(original_id, embedding, clean_frame, bx1, by1, bx2, by2, slot_name, area, w_img, h_img, aspect_ratio=0.0):
     """Uloží čistý záber (bez boxov) do Qdrantu pre ReID a Dashboard."""
 
     # 1. Striháme striktne z clean_frame (bez boxov!)
     crop_reid = clean_frame[by1:by2, bx1:bx2]
     if crop_reid.size == 0:
         return
+
+    #zistíme sharpness
+    gray = cv2.cvtColor(crop_reid, cv2.COLOR_BGR2GRAY)
+    sharpness = float(cv2.Laplacian(gray, cv2.CV_64F).var())
 
     reid_crop_path = f"crops/{original_id}_{slot_name}.jpg"
     cv2.imwrite(reid_crop_path, crop_reid)
@@ -170,7 +182,9 @@ def save_vehicle_view(original_id, embedding, clean_frame, bx1, by1, bx2, by2, s
                 "reid_crop_path": reid_crop_path,
                 "timestamp": timestamp,
                 "camera": "demo_cam",
-                "area": area
+                "area": area,
+                "aspect_ratio": aspect_ratio,
+                "sharpness": sharpness,
             }
         )]
     )
@@ -182,9 +196,11 @@ def save_vehicle_view(original_id, embedding, clean_frame, bx1, by1, bx2, by2, s
     views_list = []
     best_frame = ""
 
+    existing_best_sharpness = 0.0
     if existing:
         views_list = existing[0].payload.get("views", [])
         best_frame = existing[0].payload.get("best_frame_path", "")
+        existing_best_sharpness = existing[0].payload.get("best_sharpness", 0.0)
 
     # Pridáme nový pohľad (ak tam ešte nie je)
     view_data = {"slot": slot_name, "reid_crop_path": reid_crop_path}
@@ -203,6 +219,7 @@ def save_vehicle_view(original_id, embedding, clean_frame, bx1, by1, bx2, by2, s
             payload={
                 "original_id": original_id,
                 "best_frame_path": best_frame,
+                "best_sharpness": sharpness if slot_name == "best" else existing_best_sharpness,
                 "timestamp": timestamp,
                 "camera": "demo_cam",
                 "views": views_list
@@ -248,10 +265,9 @@ def process_video():
         dets = []
         if r.boxes is not None:
             for box in r.boxes:
-                if not yolo_tuned:
-                    cls = int(box.cls[0])
-                    if cls not in VEHICLE_CLASSES:
-                        continue
+                cls = int(box.cls[0])
+                if not yolo_tuned and cls not in VEHICLE_CLASSES:
+                    continue
 
                 x1, y1, x2, y2 = box.xyxy[0].tolist()
                 box_w = x2 - x1
@@ -320,8 +336,13 @@ def process_video():
 
                 first_seen = tid in best_tracks
                 #zlé boxy
-                if (bbox_w < 50 or bbox_h < 40) and not first_seen:
-                    continue
+                if first_seen:
+                    if bbox_w < 50 or bbox_h < 40:
+                        continue
+                else:
+                    if bbox_w < 30 or bbox_h < 25:
+                        continue
+
                 if aspect_ratio > 4.0 or aspect_ratio < 0.2:
                     continue
 
@@ -396,24 +417,25 @@ def process_video():
                             for p in existing_points:
                                 slot = p.payload.get("slot")
                                 p_area = p.payload.get("area", 0)
+                                p_aspect = p.payload.get("aspect_ratio", 0)
                                 if slot == "best" and p_area > db_best_area:
                                     db_best_area = p_area
                                 elif slot.startswith("angle"):
-                                    db_angles.append(p_area)  # Alebo aspect ratio, ak ho ukladáš
+                                    db_angles.append(p_aspect)
                             # ----------------------------------------------
 
                     if not matched:
                         print(f"ID {tid} -> NOVÉ auto ({original_id[:8]})")
 
                     # Uložíme prvý záber (aj keď je malý) - vždy, keď je nový tid
-                    save_vehicle_view(original_id, embedding, clean_frame, bx1, by1, bx2, by2, "first", area, w, h)
+                    save_vehicle_view(original_id, embedding, clean_frame, bx1, by1, bx2, by2, "first", area, w, h, aspect_ratio=aspect_ratio)
 
                     # Inicializujeme best_tracks s prevzatými hodnotami z DB
                     best_tracks[tid] = {
                         "original_id": original_id,
                         "slots": {
                             "first": area,
-                            "best": db_best_area,  # Prevzaté z DB!
+                            "best": max(db_best_area, area),  # Prevzaté z DB!
                             "angles": db_angles,  # Prevzaté z DB!
                             "exit": False
                         },
@@ -427,38 +449,47 @@ def process_video():
                 else:
                     track = best_tracks[tid]
                     slots = track["slots"]
-                    need_new_embedding = False
                     slot_to_save = None
+                    new_area = None
+                    new_aspect = None
 
-                    # A) Best (o 10% väčší)
-                    if area > slots["best"] * 1.10:
+                    # A) Best (o 30% väčší ako entry — nie hneď pri prvom zábere!)
+                    if area > slots["best"] * 1.30:
                         slot_to_save = "best"
-                        slots["best"] = area
-                        need_new_embedding = True
+                        new_area = area
 
-                    # B) Angle (zmena aspect ratio o 25% a máme menej ako 3 uhly)
+                    # B) Angle (zmena aspect ratio o 20% a máme menej ako 3 uhly)
+                    #    Embedding check pridáme vo Fáze 2, zatiaľ len AR
                     elif len(slots["angles"]) < 3:
                         aspect_change = abs(aspect_ratio - track["last_aspect"]) / track["last_aspect"]
-                        if aspect_change > 0.25:
+                        if aspect_change > 0.20:
                             slot_to_save = f"angle_{len(slots['angles']) + 1}"
-                            slots["angles"].append(aspect_ratio)
-                            track["last_aspect"] = aspect_ratio
-                            need_new_embedding = True
+                            new_area = area
+                            new_aspect = aspect_ratio
 
-                    # C) Exit (blíži sa k okraju)
+                    # C) Exit (blíži sa k okraju a už máme best)
                     is_near_edge = (bx1 < 50 or by1 < 50 or bx2 > w - 50 or by2 > h - 50)
-                    if is_near_edge and not slots["exit"]:
+                    if slot_to_save is None and is_near_edge and not slots["exit"] and slots["best"] > 0:
                         slot_to_save = "exit"
-                        slots["exit"] = True
-                        need_new_embedding = True
+                        new_area = area
 
                     # Ak treba, extrahujeme nový embedding a uložíme
-                    if need_new_embedding:
+                    if slot_to_save is not None:
                         embs = reid_encoder(frame, dets_xywh)
                         if embs[0] is not None:
                             print(f"ID {tid} -> Ukladám nový pohľad: {slot_to_save} (plocha: {area})")
-                            save_vehicle_view(track["original_id"], embs[0], clean_frame, bx1, by1, bx2, by2,slot_to_save, area, w, h)
-
+                            save_vehicle_view(
+                                track["original_id"], embs[0], clean_frame,
+                                bx1, by1, bx2, by2, slot_to_save, area, w, h, aspect_ratio=aspect_ratio
+                            )
+                            # aktualizuj stav až po úspešnom uložení
+                            if slot_to_save == "best":
+                                slots["best"] = area
+                            elif slot_to_save.startswith("angle"):
+                                slots["angles"].append(new_aspect)
+                                track["last_aspect"] = new_aspect
+                            elif slot_to_save == "exit":
+                                slots["exit"] = True
 
 
         #počet unique ID

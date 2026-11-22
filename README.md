@@ -27,6 +27,8 @@ https://maps.app.goo.gl/fr8T9Eng3LXddmJv8
 
 **Ostatné parametre (natočenie, uhol, pohľad,... ) a pohľady z kamier budú uložené** v /data/RoundaboutHD_metadata/.
 
+**Viac info o datasete:** https://doi.org/10.1016/j.softx.2019.100333
+
 ---
 
 <details>

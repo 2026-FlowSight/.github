@@ -11,22 +11,40 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 
 ---
 
+## Geografické informácie o RoundaboutHD
+
+**Kamera 1**: [39°55'37.1"N 86°06'22.3"W]
+https://maps.app.goo.gl/U8wMKaLVq7Qu1EdVA
+
+**Kamera 2**: [39°55'37.2"N 86°05'56.2"W]
+https://maps.app.goo.gl/LZ9wMKXw9S1nDPik6
+
+**Kamera 3**: [39°55'38.6"N 86°05'20.1"W]
+https://maps.app.goo.gl/g3aq8n5pEGGnUEMR9
+
+**Kamera 4**: [39°55'36.8"N 86°04'47.9"W]
+https://maps.app.goo.gl/fr8T9Eng3LXddmJv8
+
+**Ostatné parametre (natočenie, uhol, pohľad,... ) a pohľady z kamier budú uložené** v /data/RoundaboutHD_metadata/.
+
+---
+
 <details>
 <summary><h2>R&D Tasky (Klikni pre rozbalenie)</h2></summary>
 
 ### 01 - Klasifikácia značky a modelu auta (EU)
 **Popis:** Cieľom je zistiť, aké sú dostupné metódy na rozpoznanie značky (napr. Škoda, VW) a modelu európskeho auta z výrezu kamery, a overiť, či niektorý z modelov dosahuje použiteľnú presnosť na našich dátach. Výstupom je odporúčanie, ktorý prístup má zmysel ďalej rozvíjať.
-- [ ] Preštudované papers o európskych autách
-- [ ] Vyskúšané aspoň 2 modely
-- [ ] Otestované na našich výrezoch
-- [ ] Napísaný report a odprezentované
+- [X] Preštudované papers o európskych autách
+- [X] Vyskúšané aspoň 2 modely
+- [X] Otestované na našich výrezoch
+- [X] Napísaný report a odprezentované
 
 ### 02 - Multi-view ReID a duplikáty
 **Popis:** Ide o to, aby systém rozpoznal to isté auto z rôznych kamier (multi-view) a zároveň vedel rozlíšiť, kedy ide o duplikát v Qdrante. Cieľom je navrhnúť spôsob agregácie embeddingov (napr. max-pooling alebo priemerovanie) a štruktúru kolekcie v Qdrante tak, aby vyhľadávanie bolo presné a rýchle.
-- [ ] Preštudované papers o multi-view ReID
+- [] Preštudované papers o multi-view ReID
 - [ ] Vyskúšaný Max-pooling alebo priemerovanie
-- [ ] Navrhnutá štruktúra pre Qdrant
-- [ ] Otestované na videách s prekryvom
+- [X] Navrhnutá štruktúra pre Qdrant
+- [X] Otestované na videách s prekryvom
 
 ### 03 - Ukladanie a agregácia dát (1TB limit)
 **Popis:** Systém bude ukladať veľké množstvo metadát a embeddingov, pričom disk je limitovaný na 1 TB. Úlohou je preskúmať stratégie ukladania časových radov a agregácie v Qdrante, navrhnúť dátový model a vypočítať, koľko miesta zaberie prevádzka za rozumné obdobie.
@@ -36,16 +54,16 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 
 ### 04 - YOLO v noci a daždi
 **Popis:** Štandardné YOLO modely výrazne strácajú presnosť pri slabom osvetlení a daždi. Cieľom je preskúmať metódy predspracovania (napr. gama korekcia, Wienerov filter) a overiť, ktoré z nich reálne zlepšia detekciu na našich nočných a daždivých videách, vrátane merania výpočtovej náročnosti.
-- [ ] Preštudované papers o low-light detekcii
-- [ ] Vyskúšané aspoň 2 metódy (napr. gama + Wiener)
-- [ ] Zmeraná časová náročnosť
-- [ ] Odporúčanie, čo použiť
+- [X] Preštudované papers o low-light detekcii
+- [X] Vyskúšané aspoň 2 metódy (napr. gama + Wiener)
+- [X] Zmeraná časová náročnosť
+- [X] Odporúčanie, čo použiť
 
 ### 05 - Klasifikátor farieb a features
 **Popis:** Pre vyhľadávanie áut podľa farby je potrebné spoľahlivo určiť farbu z výrezu. Úlohou je preskúmať metódy rozpoznávania farieb, vyskúšať HSV analýzu a prípadne CNN, a navrhnúť sadu kategórií farieb, ktoré budú pre používateľov zmysluplné a zároveň dobre rozlíšiteľné.
-- [ ] Preštudované metódy pre rozpoznávanie farieb
-- [ ] Vyskúšaná HSV analýza a prípadne CNN
-- [ ] Navrhnuté kategórie farieb
+- [X] Preštudované metódy pre rozpoznávanie farieb
+- [X] Vyskúšaná HSV analýza a prípadne CNN
+- [X] Navrhnuté kategórie farieb
 
 ### 06 - Príprava na Axis integráciu (ŠPZ)
 **Popis:** Cieľom je pripraviť sa na napojenie na Axis LPR (rozpoznávanie ŠPZ) tak, aby systém vedel prijímať dáta o poznávacích značkách. Úlohou je preštudovať dokumentáciu, navrhnúť API endpoint a pripraviť mock JSON, na ktorom sa dá integrovať ešte pred dodaním reálnej kamery.
@@ -60,9 +78,9 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 
 ### 08 - Počítanie obsadenosti parkovísk
 **Popis:** Mesto chce vedieť, ako sú parkoviská obsadené. Úlohou je preskúmať metódy počítania áut na parkovisku, vyskúšať ich na videu z reálneho parkoviska a napísať report s dosiahnutou presnosťou, aby bolo jasné, či je výsledok použiteľný v praxi.
-- [ ] Preštudované metódy pre počítanie
-- [ ] Vyskúšané na videu z parkoviska
-- [ ] Napísaný report s presnosťou
+- [X] Preštudované metódy pre počítanie
+- [X] Vyskúšané na videu z parkoviska
+- [X] Napísaný report s presnosťou
 
 ### 09 - Detekcia nehôd a podozrivého správania
 **Popis:** Cieľom je navrhnúť pravidlá, ktoré dokážu z tracking dát odhaliť nehodu alebo podozrivé správanie (napr. náhle zastavenie, nezvyčajný pohyb). Úlohou je preskúmať existujúce metódy, navrhnúť konkrétne pravidlá a otestovať ich na videu.
@@ -84,19 +102,19 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 
 ### 12 - Detekcia ohňa a dymu
 **Popis:** Cieľom je overiť, či existujúci alebo dostupný model dokáže spoľahlivo detegovať oheň a dym na mestských kamerách, a to aj s ohľadom na falošné poplachy (západ slnka, červené svetlá). Úlohou je preskúmať papers, vyskúšať aspoň jeden model, otestovať ho na videu vrátane negatívnych príkladov, zmerať výpočtovú náročnosť a napísať report.
-- [ ] Preštudované papers o detekcii ohňa
-- [ ] Vyskúšaný aspoň 1 model
-- [ ] Otestované na videu + negatívne príklady
-- [ ] Zmeraná výpočtová náročnosť
-- [ ] Napísaný report
+- [X] Preštudované papers o detekcii ohňa
+- [X] Vyskúšaný aspoň 1 model
+- [X] Otestované na videu + negatívne príklady
+- [X] Zmeraná výpočtová náročnosť
+- [X] Napísaný report
 
 ### 13 - High-Level Architecture Diagram
 **Popis:** Cieľom je vytvoriť vysokúrovňový blokový diagram systému FlowSight, ktorý zobrazí hlavné komponenty a tok dát. Diagram slúži ako mapa pre tím (R&D aj DEV), aby všetci videli, ako do seba zapadá vstup z kamier, spracovanie (YOLO, ReID), ukladanie (Qdrant) a výstup (Dashboard, Mapa). Musí obsahovať aj vetvu pre Axis LPR a hardvérovú vrstvu (Jetson, Server). Výstupom je obrázok alebo Mermaid kód v `/docs/architecture/`.
-- [ ] Navrhnutá štruktúra blokov (Kamery, YOLO, ReID, Qdrant, Dashboard)
-- [ ] Zakreslené toky dát (šípky)
-- [ ] Oddelená vetva pre Axis LPR a hardvér
-- [ ] Diagram uložený v `/docs/architecture/`
-- [ ] Odprezentované na tímovom stretnutí
+- [X] Navrhnutá štruktúra blokov (Kamery, YOLO, ReID, Qdrant, Dashboard)
+- [X] Zakreslené toky dát (šípky)
+- [X] Oddelená vetva pre Axis LPR a hardvér
+- [X] Diagram uložený v `/docs/architecture/`
+- [X] Odprezentované na tímovom stretnutí
 
 </details>
 
@@ -126,16 +144,16 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 - [ ] Funkcia vráti správny smer jazdy vozidla na testovacom videu (odolná voči šumu)
 
 ### DEV02 - Časová a Priestorová Kauzalita
-- [ ] Funkcia funguje na mock dátach
-- [ ] Dokáže spojiť auto aj keď ReID zlyhal, ale čas a vzdialenosť sedia
+- [] Funkcia funguje na mock dátach
+- [] Dokáže spojiť auto aj keď ReID zlyhal, ale čas a vzdialenosť sedia
 
 ### DEV03 - Počítanie Áut na Parkovisku
-- [ ] Skript spočíta autá na testovacom videu
-- [ ] Výstup je CSV s časom a počtom áut
+- [X] Skript spočíta autá na testovacom videu
+- [] Výstup je CSV s časom a počtom áut
 
 ### DEV04 - Klasifikácia Farieb (HSV)
-- [ ] Funkcia vráti farbu pre testovacie výrezy
-- [ ] Výsledky sú aspoň na 80 % správne pri jasných farbách
+- [X] Funkcia vráti farbu pre testovacie výrezy
+- [X] Výsledky sú aspoň na 80 % správne pri jasných farbách
 
 ### DEV05 - Mapovanie Presetov (PTZ)
 - [ ] Konfigurácia existuje
@@ -148,7 +166,7 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 - [ ] Presnosť modelu je otestovaná na našich výrezoch z RoundaboutHD
 
 ### DEV07 - Integrácia Detekcie Ohňa
-- [ ] Model deteguje oheň na testovacom videu
+- [X] Model deteguje oheň na testovacom videu
 - [ ] Alert sa zobrazí v dashboarde
 
 ### DEV08 - Integrácia Axis LPR
@@ -171,17 +189,17 @@ FlowSight je výskumno-vývojový projekt zameraný na analýzu mestských kamer
 <summary><h2>DEV Dashboard Tasky (Klikni pre rozbalenie)</h2></summary>
 
 ### DEV11 - FastAPI Server
-- [ ] API beží na localhoste
-- [ ] Endpointy vracajú dáta z Qdrant
+- [X] API beží na localhoste
+- [X] Endpointy vracajú dáta z Qdrant
 
 ### DEV12 - Interaktívna Mapa (Leaflet)
-- [ ] Mapa sa načíta
-- [ ] Vrstvy sa dajú vypnúť/zapnúť
-- [ ] Kamery sú klikateľné
+- [X] Mapa sa načíta
+- [X] Vrstvy sa dajú vypnúť/zapnúť
+- [X] Kamery sú klikateľné
 
 ### DEV13 - Vyhľadávací Dashboard (Frontend)
-- [ ] Nahrávanie obrázka funguje
-- [ ] Výsledky sa zobrazia do 2 sekúnd
+- [X] Nahrávanie obrázka funguje
+- [X] Výsledky sa zobrazia do 2 sekúnd
 
 ### DEV14 - Export Výsledkov (PDF/CSV)
 - [ ] Export funguje pre mock dáta

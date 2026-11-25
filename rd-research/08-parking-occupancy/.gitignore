@@ -1,0 +1,6 @@
+# veľké alebo vygenerované súbory
+data/pklot/
+*.mp4
+report/*.html
+__pycache__/
+.DS_Store

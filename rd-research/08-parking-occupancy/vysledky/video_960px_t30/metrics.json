@@ -1,0 +1,156 @@
+{
+ "model": "yolov8n.pt",
+ "imgsz": 960,
+ "every_s": 1.0,
+ "t_off": 30.0,
+ "slots": 45,
+ "samples": 150,
+ "gt_min": 38,
+ "gt_max": 39,
+ "bez_pamate": {
+  "presnost_miest": 0.9555555555555556,
+  "f1_obsadene": 0.9734580866908535,
+  "mae_pocet": 1.8992805755395683,
+  "presne_trafene": 0.08633093525179857,
+  "chyba_max_1": 0.31654676258992803,
+  "min_pocet": 34,
+  "max_pocet": 40,
+  "zmeny_stavu_miest": 161
+ },
+ "s_pamatou": {
+  "presnost_miest": 0.9779376498800959,
+  "f1_obsadene": 0.9871364653243848,
+  "mae_pocet": 0.8633093525179856,
+  "presne_trafene": 0.15827338129496402,
+  "chyba_max_1": 0.9784172661870504,
+  "min_pocet": 38,
+  "max_pocet": 40,
+  "zmeny_stavu_miest": 42
+ },
+ "udalosti": {
+  "S30": [
+   [
+    0.0,
+    "FREE",
+    "ARRIVING"
+   ],
+   [
+    9.0,
+    "ARRIVING",
+    "OCCUPIED"
+   ],
+   [
+    67.0,
+    "OCCUPIED",
+    "LEAVING"
+   ],
+   [
+    98.0,
+    "LEAVING",
+    "FREE"
+   ]
+  ],
+  "S37": [
+   [
+    64.0,
+    "FREE",
+    "ARRIVING"
+   ],
+   [
+    73.0,
+    "ARRIVING",
+    "OCCUPIED"
+   ],
+   [
+    98.0,
+    "OCCUPIED",
+    "LEAVING"
+   ],
+   [
+    129.0,
+    "LEAVING",
+    "FREE"
+   ]
+  ],
+  "R2": [
+   [
+    14.0,
+    "FREE",
+    "ARRIVING"
+   ],
+   [
+    22.0,
+    "ARRIVING",
+    "FREE"
+   ],
+   [
+    64.0,
+    "FREE",
+    "ARRIVING"
+   ],
+   [
+    73.0,
+    "ARRIVING",
+    "OCCUPIED"
+   ]
+  ],
+  "E1": [
+   [
+    104.0,
+    "FREE",
+    "ARRIVING"
+   ],
+   [
+    108.0,
+    "ARRIVING",
+    "FREE"
+   ]
+  ],
+  "E3": [
+   [
+    110.0,
+    "FREE",
+    "ARRIVING"
+   ],
+   [
+    118.0,
+    "ARRIVING",
+    "FREE"
+   ]
+  ],
+  "E4": [
+   [
+    59.0,
+    "FREE",
+    "ARRIVING"
+   ],
+   [
+    63.0,
+    "ARRIVING",
+    "FREE"
+   ],
+   [
+    110.0,
+    "FREE",
+    "ARRIVING"
+   ],
+   [
+    118.0,
+    "ARRIVING",
+    "FREE"
+   ]
+  ],
+  "E5": [
+   [
+    109.0,
+    "FREE",
+    "ARRIVING"
+   ],
+   [
+    117.0,
+    "ARRIVING",
+    "FREE"
+   ]
+  ]
+ }
+}

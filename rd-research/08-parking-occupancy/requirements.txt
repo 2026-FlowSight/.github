@@ -1,0 +1,6 @@
+# Python 3.12, testované na Apple M2 (MPS)
+ultralytics>=8.4
+opencv-python
+numpy
+matplotlib
+requests

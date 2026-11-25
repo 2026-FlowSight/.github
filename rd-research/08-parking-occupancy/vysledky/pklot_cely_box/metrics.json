@@ -1,0 +1,29 @@
+{
+ "model": "yolov8n.pt",
+ "imgsz": 1280,
+ "fp_ratio": 1.0,
+ "fotiek": 154,
+ "miest": 40,
+ "od": "06:05",
+ "do": "18:55",
+ "bez_pamate": {
+  "presnost_miest": 0.986038961038961,
+  "f1_obsadene": 0.9912226985099,
+  "falosne_obsadene": 19,
+  "prehliadnute": 67,
+  "mae_pocet": 0.4025974025974026,
+  "chyba_max_1": 0.974025974025974,
+  "chyba_max_2": 1.0,
+  "priemerna_odchylka": -0.3116883116883117
+ },
+ "s_pamatou": {
+  "presnost_miest": 0.9459415584415585,
+  "f1_obsadene": 0.9664280673454986,
+  "falosne_obsadene": 203,
+  "prehliadnute": 130,
+  "mae_pocet": 1.474025974025974,
+  "chyba_max_1": 0.6623376623376623,
+  "chyba_max_2": 0.7857142857142857,
+  "priemerna_odchylka": 0.474025974025974
+ }
+}

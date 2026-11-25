@@ -1,0 +1,26 @@
+{
+ "video": "parking_lot_1.mp4",
+ "note": "Ručne overené z výrezov každých 5 s. V ~63. s je strih videa.",
+ "default": "occupied",
+ "always_free": [
+  "E1",
+  "E2",
+  "E3",
+  "E4",
+  "E5"
+ ],
+ "intervals": {
+  "S30": [
+   [
+    0,
+    63
+   ]
+  ],
+  "S37": [
+   [
+    64,
+    94
+   ]
+  ]
+ }
+}

@@ -3,10 +3,11 @@
  * FlowSight – vyhľadávací dashboard (DEV13 / SCRUM-26)
  *
  * Dva režimy:
- *  - Ukážkové dáta (predvolené): nič sa neposiela, výsledky sú pevné záznamy z projektového datasetu
- *    data/crops a data/frames (RoundaboutHD, nie Pezinok). Časy, kamery a skóre sú vymyslené.
- *  - API: po zadaní adresy v paneli „Pre vývojárov“ (alebo ?api=… v URL) sa obrázok posiela na
- *    POST {api}/api/search ako multipart/form-data. Kontrakt je NÁVRH na dohodu s backendom (SCRUM-24).
+ *  - API (DEV11): keď stránku servíruje samotné API (…/dashboard/…), adresa sa zistí sama – rovnako ako na mape.
+ *    Inak ?api=http://… v URL alebo pole v paneli „Pre vývojárov“ (adresa sa zapamätá, spoločne s mapou).
+ *    Kamery idú z GET /api/cameras, galéria z GET /api/vehicles/recent, fotka na POST /api/search (multipart).
+ *  - Ukážkové dáta (keď API nie je zadané, alebo ?api= prázdne): nič sa neposiela, výsledky sú pevné záznamy
+ *    z projektového datasetu (RoundaboutHD, nie Pezinok). Časy, kamery a skóre sú vymyslené.
  */
 
 const $ = (id) => document.getElementById(id);
@@ -18,15 +19,19 @@ const CONFIG = {
   targetMs: 2000,       // Definition of Done: výsledky do 2 s
   requestTimeoutMs: 15000,
   demoLatencyMs: 420,   // iba aby bol vidieť stav načítavania
-  storageKey: 'flowsight.dev13.apiUrl',
+  storageKey: 'flowsight.apiUrl',          // rovnaký kľúč ako mapa (DEV12 api.js)
+  legacyStorageKey: 'flowsight.dev13.apiUrl',
+  loadTimeoutMs: 6000,
+  galleryCount: 4,
 };
 
-// Spoločný zoznam kamier s mapou (data/cameras.js); záloha, ak sa súbor nenačíta.
-const CAMERAS = window.FLOWSIGHT_CAMERAS ?? [
+// Kamery: z API (/api/cameras, rovnaký zoznam ako mapa). Bez API data/cameras.js; posledná záloha nižšie.
+const STATIC_CAMERAS = window.FLOWSIGHT_CAMERAS ?? [
   { id: 'msp-25', name: 'Kamera 25 – Za hradbami', area: 'Juh' },
   { id: 'msp-5', name: 'Kamera 5 – Mladoboleslavská', area: 'Centrum' },
   { id: 'msp-21', name: 'Kamera 21 – Trnavská Tabak', area: 'Muškát' },
 ];
+let CAMERAS = STATIC_CAMERAS;
 const cameraName = (id) => CAMERAS.find((c) => c.id === id)?.name ?? String(id ?? '—');
 
 /* ---------- Ukážkové dáta ---------- */
@@ -156,7 +161,7 @@ function setApiStatus(value) {
 
 /* ---------- Filtre ---------- */
 // Kamier je veľa (41), preto sa filtruje podľa častí mesta. Z mapy sa dá prísť s jednou kamerou (?camera=msp-5).
-const AREAS = [...new Set(CAMERAS.map((c) => c.area ?? 'Ostatné'))];
+let AREAS = [];
 let onlyCamera = null;
 
 function readFilters() {
@@ -422,7 +427,8 @@ async function searchApi(query, filters, signal) {
     if (r.score != null && typeof r.score !== 'number') throw new SearchError('contract', `Výsledok ${i + 1} má skóre, ktoré nie je číslo.`);
   });
   setApiStatus('ok');
-  const absolute = (u) => (u ? new URL(u, `${base}/`).href : '');
+  state.embedder = typeof data?.embedder === 'string' ? data.embedder : null;
+  const absolute = absoluteUrl;
   const mapped = list.map((r, i) => {
     const payload = r.payload ?? {};
     const camera = r.camera ?? r.camera_id ?? payload.camera ?? payload.camera_id;
@@ -555,10 +561,14 @@ function renderResults(results, filters, elapsed, demo) {
   const n = results.length;
   $('results-title').textContent = n === 1 ? 'Najbližšia zhoda' : `${n} najbližšie zhody`;
   $('results-sub').textContent = 'Zoradené podľa skóre podobnosti od modelu (0–1). Skóre nie je pravdepodobnosť, že ide o to isté vozidlo.';
+  if (!demo && /histogram|placeholder/i.test(state.embedder ?? '')) {
+    $('result-note').textContent = 'Server zatiaľ prevádza fotku na vektor dočasne (farebný histogram, kým nebude DEV16), takže nájde hlavne autá podobnej farby.';
+    $('result-note').hidden = false;
+  }
   if (demo) {
     $('result-note').textContent = state.query.demoId
       ? 'Ukážkové dáta: zábery sú z projektového datasetu (nie z kamier Pezinka). V každej ukážkovej sade je jeden záber toho istého vozidla z iného miesta. Priradenie ku kamerám, čas a podobnosť sú vymyslené.'
-      : 'Ukážkové dáta: vlastná fotografia sa neanalyzuje, zobrazujú sa pevné výsledky. Na skutočné hľadanie zadajte adresu API v paneli Pre vývojárov.';
+      : 'Ukážkové dáta: vlastná fotografia sa neanalyzuje, zobrazujú sa pevné výsledky. Na skutočné hľadanie spustite API (DEV11) a otvorte stránku cez neho, alebo zadajte jeho adresu v paneli Pre vývojárov.';
     $('result-note').hidden = false;
   }
   announce(`Hotovo. ${n === 1 ? 'Našiel sa 1 záznam' : `Našli sa ${n} záznamy`}${missing ? `, ${missing} bez záberu` : ''}.`);
@@ -611,6 +621,95 @@ function openCompare(r, index) {
   $('compare').showModal();
 }
 
+/* ---------- Načítanie z API (kamery, galéria) ---------- */
+let gallery = DEMO;            // čo je práve v galérii: ukážkové sady alebo posledné prejazdy z Qdrantu
+let sourcesToken = 0;
+
+// ?api=… má prednosť (aj prázdne = ukážkové dáta), potom server, ktorý stránku servíruje, potom zapamätaná adresa.
+function initialApi() {
+  const params = new URLSearchParams(location.search);
+  if (params.has('api')) return params.get('api').trim();
+  if (location.protocol.startsWith('http') && location.pathname.startsWith('/dashboard/')) return location.origin;
+  try {
+    return localStorage.getItem(CONFIG.storageKey) || localStorage.getItem(CONFIG.legacyStorageKey) || '';
+  } catch { return ''; }
+}
+function saveApi(value) {
+  try {
+    if (value) localStorage.setItem(CONFIG.storageKey, value);
+    else localStorage.removeItem(CONFIG.storageKey);
+    localStorage.removeItem(CONFIG.legacyStorageKey);
+  } catch { /* súkromné okno */ }
+}
+
+async function getJson(path) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), CONFIG.loadTimeoutMs);
+  try {
+    const res = await fetch(`${apiBase()}${path}`, { signal: ctrl.signal, headers: { Accept: 'application/json' } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+const absoluteUrl = (u) => (u ? new URL(u, `${apiBase()}/`).href : '');
+
+function vehicleLabel(v) {
+  const w = when(v.timestamp);
+  const cam = (v.camera_name ?? cameraName(v.camera)).replace(/^Kamera (\S+) – .*/, 'Kamera $1');
+  return w.time === '—' ? cam : `${cam}, ${w.day} ${w.time}`;
+}
+
+// Kamery a galériu zoberieme z API; čo sa nenačíta, zostane z ukážkových dát (a povie to prepínač režimu).
+async function loadSources() {
+  const token = ++sourcesToken;
+  let cameras = STATIC_CAMERAS;
+  let items = DEMO;
+  if (!isDemo()) {
+    const [cams, recent] = await Promise.allSettled([
+      getJson('/api/cameras'),
+      getJson(`/api/vehicles/recent?limit=${CONFIG.galleryCount}`),
+    ]);
+    if (token !== sourcesToken) return;
+    const camsOk = cams.status === 'fulfilled' && Array.isArray(cams.value?.cameras) && cams.value.cameras.length > 0;
+    if (camsOk) cameras = cams.value.cameras;
+    if (recent.status === 'fulfilled' && Array.isArray(recent.value?.vehicles)) {
+      const fromDb = recent.value.vehicles.filter((v) => v.image_url).map((v) => ({
+        id: `v-${v.original_id ?? v.id}`, label: vehicleLabel(v), image: absoluteUrl(v.image_url),
+      }));
+      if (fromDb.length) items = fromDb;
+    }
+    state.apiStatus = camsOk ? 'ok' : 'down';
+  } else {
+    state.apiStatus = null;
+  }
+  CAMERAS = cameras;
+  gallery = items;
+  renderSources();
+  updateMode();
+}
+
+function renderSources() {
+  $('gallery').replaceChildren(...gallery.map((item) =>
+    el('button', { type: 'button', class: 'gallery-item', 'data-id': item.id, 'aria-pressed': 'false', 'aria-label': item.label, title: item.label, onclick: () => chooseDemo(item) },
+      el('img', { src: item.image, alt: '' }))));
+  $('gallery-title').textContent = gallery === DEMO ? 'Alebo vyberte ukážkový záber' : 'Alebo vyberte z posledných prejazdov';
+
+  // Odškrtnuté časti mesta zostanú odškrtnuté aj po prekreslení.
+  const unchecked = new Set([...document.querySelectorAll('#camera-list input')].filter((i) => !i.checked).map((i) => i.value));
+  AREAS = [...new Set(CAMERAS.map((c) => c.area ?? 'Ostatné'))];
+  $('camera-list').replaceChildren(...AREAS.map((area) => {
+    const count = CAMERAS.filter((c) => (c.area ?? 'Ostatné') === area).length;
+    return el('label', { class: 'check' }, el('input', { type: 'checkbox', value: area, ...(unchecked.has(area) ? {} : { checked: '' }) }),
+      el('span', { text: area }), el('span', { class: 'check-count', text: String(count) }));
+  }));
+  if (onlyCamera && !CAMERAS.some((c) => c.id === onlyCamera)) onlyCamera = null;
+  renderOnlyCamera();
+  updateFilterSummary();
+  markGallery(state.query?.demoId ?? null);
+}
+
 /* ---------- Inicializácia ---------- */
 function resetFilters() {
   document.querySelector('input[name="range"][value="all"]').checked = true;
@@ -620,34 +719,23 @@ function resetFilters() {
   updateFilterSummary();
 }
 
-function init() {
-  $('gallery').replaceChildren(...DEMO.map((item) =>
-    el('button', { type: 'button', class: 'gallery-item', 'data-id': item.id, 'aria-pressed': 'false', 'aria-label': item.label, title: item.label, onclick: () => chooseDemo(item) },
-      el('img', { src: item.image, alt: '' }))));
-
-  $('camera-list').replaceChildren(...AREAS.map((area) => {
-    const count = CAMERAS.filter((c) => (c.area ?? 'Ostatné') === area).length;
-    return el('label', { class: 'check' }, el('input', { type: 'checkbox', value: area, checked: '' }),
-      el('span', { text: area }), el('span', { class: 'check-count', text: String(count) }));
-  }));
-
-  // Adresa API: ?api=… má prednosť, inak posledná uložená hodnota.
-  const fromUrl = new URLSearchParams(location.search).get('api');
-  let saved = '';
-  try { saved = localStorage.getItem(CONFIG.storageKey) ?? ''; } catch { /* súkromné okno */ }
-  $('api-url').value = fromUrl ?? saved;
+async function init() {
+  $('api-url').value = initialApi().replace(/\/+$/, '');
+  if (new URLSearchParams(location.search).has('api')) saveApi(apiBase());
   $('api-url').addEventListener('change', () => {
-    try { localStorage.setItem(CONFIG.storageKey, apiBase()); } catch { /* ignore */ }
-    cancelPending();
+    saveApi(apiBase());
+    resetQuery();
     state.apiStatus = null;
     updateMode();
-    showIdle(Boolean(state.query));
+    loadSources();
   });
   updateMode();
+  // Kým odpovie API, galéria a kamery sú z ukážkových dát – stránka je hneď použiteľná.
+  renderSources();
 
   $('file').addEventListener('change', (e) => { if (e.target.files.length) acceptFile(e.target.files[0]); });
   $('remove').addEventListener('click', resetQuery);
-  $('try-button').addEventListener('click', () => { chooseDemo(DEMO[0]); runSearch(); });
+  $('try-button').addEventListener('click', () => { chooseDemo(gallery[0]); runSearch(); });
   $('query-form').addEventListener('submit', (e) => { e.preventDefault(); runSearch(); });
   $('query-form').addEventListener('change', (e) => { if (e.target.closest('#filters')) onFiltersChanged(); });
   $('stale-rerun').addEventListener('click', runSearch);
@@ -668,16 +756,17 @@ function init() {
   });
   window.addEventListener('pagehide', revokePreview);
 
-  // Príchod z mapy: ?camera=msp-5 zúži hľadanie na jednu kameru.
+  showIdle(false);
+  await loadSources();
+
+  // Príchod z mapy alebo z udalosti: ?camera=msp-5 zúži hľadanie na jednu kameru.
   const fromMap = new URLSearchParams(location.search).get('camera');
   if (fromMap && CAMERAS.some((c) => c.id === fromMap)) {
     onlyCamera = fromMap;
     $('filters').open = true;
   }
   renderOnlyCamera();
-
   updateFilterSummary();
-  showIdle(false);
 }
 
 init();

@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@87.5..100,400..700&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261116j">
-<script defer src="data/cameras.js?v=20261116j"></script>
-<script defer src="app.js?v=20261116j"></script>
+<link rel="stylesheet" href="styles.css?v=20261126a">
+<script defer src="data/cameras.js?v=20261126a"></script>
+<script defer src="app.js?v=20261126a"></script>
 </head>
 <body>
 <svg class="icon-library" aria-hidden="true"><defs>
@@ -118,7 +118,7 @@
    <div id="state-idle" class="state-idle">
     <div class="slots" aria-hidden="true"><span>1</span><span>2</span><span>3</span></div>
     <p>Tu sa zobrazia tri záznamy, ktoré sa na hľadané vozidlo podobajú najviac, aj s časom a kamerou.</p>
-    <button id="try-button" type="button" class="secondary">Vyskúšať s ukážkovým záberom</button>
+    <button id="try-button" type="button" class="secondary">Vyskúšať so záberom z galérie</button>
    </div>
 
    <ol id="skeleton" class="result-list is-skeleton" aria-hidden="true" hidden>
@@ -146,7 +146,7 @@
    <div class="devtools-body">
     <label for="api-url">Adresa API</label>
     <input id="api-url" type="url" placeholder="napr. http://127.0.0.1:8000" spellcheck="false" autocomplete="off">
-    <p class="hint">Prázdne pole = ukážkové dáta. S adresou sa obrázok posiela cez <code>POST /api/search</code> (multipart, pole <code>image</code>). Kontrakt je návrh na dohodu s backendom.</p>
+    <p class="hint">Keď stránku servíruje API (DEV11, <code>/dashboard/…</code>), adresa sa doplní sama. Prázdne pole = ukážkové dáta. Kamery idú z <code>/api/cameras</code>, galéria z <code>/api/vehicles/recent</code>, fotka na <code>POST /api/search</code>.</p>
     <label class="check"><input id="simulate-error" type="checkbox"><span>Simulovať chybu API (iba ukážkové dáta)</span></label>
    </div>
   </details>

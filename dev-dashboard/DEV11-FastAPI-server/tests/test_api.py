@@ -110,6 +110,14 @@ def test_cors_for_dashboard(client):
 
 def test_serves_dashboard(client):
     assert client.get("/dashboard/DEV12-interactive-map/mapa.html").status_code == 200
+    assert client.get("/dashboard/DEV13-db-search-frontend/index.html").status_code == 200
+    assert client.get("/dashboard/DEV13-db-search-frontend/udalosti.html").status_code == 200
+
+
+def test_root_opens_dashboard(client):
+    r = client.get("/", follow_redirects=False)
+    assert r.status_code in (302, 307)
+    assert r.headers["location"] == "/dashboard/DEV12-interactive-map/mapa.html"
 
 
 def test_recent_vehicles(client):

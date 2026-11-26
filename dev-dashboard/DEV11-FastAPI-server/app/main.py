@@ -2,7 +2,7 @@
 
 Spustenie (z priečinka DEV11-FastAPI-server):
     uvicorn app.main:app --reload --port 8000
-Swagger: http://127.0.0.1:8000/docs   ·   Mapa (DEV12): http://127.0.0.1:8000/dashboard/DEV12-interactive-map/mapa.html
+Dashboard: http://127.0.0.1:8000/   ·   Swagger: http://127.0.0.1:8000/docs
 """
 from __future__ import annotations
 
@@ -146,7 +146,8 @@ def parking_summary(lots: list[dict]) -> dict:
 # ---------- endpointy ----------
 @app.get("/", include_in_schema=False)
 def root():
-    return RedirectResponse("/docs")
+    # Jedna adresa pre celý dashboard: http://127.0.0.1:8000/ otvorí mapu, odtiaľ sa ide na udalosti a vyhľadávanie.
+    return RedirectResponse("/dashboard/DEV12-interactive-map/mapa.html")
 
 
 @app.get("/api/health", tags=["Systém"], summary="Beží API? Je dostupný Qdrant?")

@@ -17,7 +17,7 @@ Rozhranie (inšpirácia z AI vizualizácie, ale doplniť funkcie), kde používa
 
 ## Definition of Done
 - [x] Nahrávanie obrázka funguje.
-- [ ] Výsledky sa zobrazia do 2 sekúnd. (na ukážkových dátach áno, s reálnym API ešte neoverené)
+- [x] Výsledky sa zobrazia do 2 sekúnd. (cez API z DEV11 a lokálny Qdrant približne 0,2 s aj s načítaním záberov)
 
 ---
 
@@ -25,13 +25,31 @@ Rozhranie (inšpirácia z AI vizualizácie, ale doplniť funkcie), kde používa
 
 ![Vyhľadávanie](screenshots/vyhladavanie.png)
 
-Frontend je čisté HTML, CSS a JS, nič sa nebuildí. Stačí otvoriť `index.html` v prehliadači, alebo spustiť server z priečinka `dev-dashboard`:
+Frontend je čisté HTML, CSS a JS, nič sa nebuildí.
+
+### Spustenie spolu s backendom
+
+Frontend a backend sú prepojené, celý dashboard beží z jednej adresy cez API z [DEV11](../DEV11-FastAPI-server/):
 
 ```
-python -m http.server 8000
+cd dev-dashboard/DEV11-FastAPI-server
+pip install -r requirements.txt
+python scripts/seed_qdrant.py
+uvicorn app.main:app --port 8000
 ```
 
-a ísť na http://localhost:8000/DEV13-db-search-frontend/
+Potom stačí otvoriť http://127.0.0.1:8000/. Otvorí sa mapa a cez menu sa dá prejsť na udalosti a vyhľadávanie. Keď stránku servíruje API, vyhľadávanie si jeho adresu nájde samo, netreba nič zadávať:
+
+- kamery vo filtri sú z `GET /api/cameras`, teda rovnaký zoznam ako na mape
+- galéria ukazuje posledné prejazdy z Qdrantu (`GET /api/vehicles/recent`)
+- fotka ide na `POST /api/search` a výsledky sú z Qdrantu
+- „Hľadať vozidlo“ na mape otvorí vyhľadávanie s predvybranou kamerou
+
+Vpravo hore je vidieť, či API odpovedá. Keď nebeží, stránka ostane použiteľná na ukážkových dátach. Adresa API sa pamätá spolu s mapou (rovnaký kľúč v prehliadači).
+
+### Bez backendu
+
+Stačí otvoriť `index.html` alebo spustiť `python -m http.server 8000` z priečinka `dev-dashboard`. Bez API beží stránka na ukážkových dátach. Ukážkové dáta sa dajú vynútiť aj cez API, ak sa do URL pridá `?api=` s prázdnou hodnotou.
 
 - nahratie fotky (presunutím alebo kliknutím), JPG/PNG/WebP do 10 MB, zlý súbor sa odmietne a pôvodná fotka zostane
 - alebo výber z galérie posledných detekcií
@@ -41,7 +59,7 @@ a ísť na http://localhost:8000/DEV13-db-search-frontend/
 - keď sa zmenia filtre, starý výsledok sa označí, aby ho nikto nebral ako aktuálny
 - chybové stavy: server nebeží, timeout (15 s), zlá odpoveď, zábery sa nenačítali
 
-Bez adresy API beží na ukážkových dátach (zábery z RoundaboutHD, kamery a časy sú vymyslené). Adresa API sa dá zadať dole v sekcii „Pre vývojárov“ alebo cez `?api=http://127.0.0.1:8000` v URL.
+Na ukážkových dátach sú zábery z RoundaboutHD, kamery a časy sú vymyslené. Adresa iného API sa dá zadať dole v sekcii „Pre vývojárov“ alebo cez `?api=http://127.0.0.1:8000` v URL.
 
 ### Udalosti
 
@@ -49,7 +67,7 @@ Bez adresy API beží na ukážkových dátach (zábery z RoundaboutHD, kamery a
 
 Navyše je tu stránka `udalosti.html`, zatiaľ iba s ukážkovými udalosťami (požiar, jazda v protismere, dlhé státie...). Zábery ohňa sú z prototypu R&D 12. Je to návrh, ako by mohli vyzerať alerty v dashboarde, keď bude detekcia napojená.
 
-## API (návrh, treba dohodnúť s DEV11/DEV14)
+## API (DEV11)
 
 Request: `POST /api/search`, multipart
 
@@ -81,9 +99,9 @@ Response:
 Prispôsobil som to Jánovej pipeline (`rd-research/02-multi-view-reid`), takže stačí poslať body z Qdrantu tak, ako sú. Ak príde to isté auto viackrát (spredu, zboku...), ukáže sa iba jeho najlepší pohľad. Obrázok berie z `image_url`, `frame_path`, `best_frame_path` alebo `reid_crop_path`. Relatívne cesty sa skladajú s adresou API, takže backend musí tie súbory servírovať.
 
 Čo ešte treba vyriešiť:
-- `timestamp` je teraz iba čas spracovania (`HH:MM:SS`), chýba dátum a reálny čas záznamu
-- `camera` je zatiaľ `demo_cam`, treba id kamier ako v `data/cameras.js` (`msp-1` ... `msp-38`, `msp-z2` ... `msp-z4`)
-- CORS na serveri, inak prehliadač request zablokuje
+- prevod fotky na vektor je na serveri zatiaľ dočasný (farebný histogram), skutočný ReID model príde v DEV16. Stránka to pri výsledkoch napíše.
+- pipeline (`rd-research/02`) ukladá čas iba ako `HH:MM:SS` a kameru `demo_cam`. Ukážková databáza z `seed_qdrant.py` už má ISO čas aj id kamier, pipeline to ešte treba upraviť.
+- udalosti sú stále iba ukážkové (`data/events.js`), backend pre ne zatiaľ nemá endpoint, lebo chýba detekcia
 
 ## Súbory
 

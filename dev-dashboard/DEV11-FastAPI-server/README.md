@@ -63,9 +63,9 @@ python scripts/seed_qdrant.py          # naplní lokálny Qdrant ukážkovými p
 uvicorn app.main:app --reload --port 8000
 ```
 
+- Dashboard: http://127.0.0.1:8000/ (otvorí mapu DEV12, z nej sa ide na udalosti a vyhľadávanie DEV13)
 - Swagger: http://127.0.0.1:8000/docs
-- Mapa (DEV12): http://127.0.0.1:8000/dashboard/DEV12-interactive-map/mapa.html
-- Vyhľadávanie (DEV13) cez toto API: http://127.0.0.1:8000/dashboard/DEV13-db-search-frontend/index.html?api=http://127.0.0.1:8000
+- Vyhľadávanie (DEV13) si adresu API zistí samo, keď ho servíruje tento server. Kamery, galériu aj výsledky berie odtiaľto.
 
 Pred prezentáciou spusti `seed_qdrant.py` znova, nech je „dnes“ v štatistikách aktuálne.
 
@@ -82,8 +82,8 @@ a v `config/settings.yaml` nastav `qdrant.url`.
 python -m pytest -q
 ```
 
-12 testov nad vlastnou dočasnou databázou: health, Swagger, GPS kamier, parkoviská, štatistiky (súčty sedia),
-vyhľadávanie (Top-3 sú 3 rôzne autá, rovnaký záber je prvý, filtre kamera/čas), chybné vstupy, CORS, zábery.
+13 testov nad vlastnou dočasnou databázou: health, Swagger, GPS kamier, parkoviská, štatistiky (súčty sedia),
+vyhľadávanie (Top-3 sú 3 rôzne autá, rovnaký záber je prvý, filtre kamera/čas), chybné vstupy, CORS, zábery, servírovanie dashboardu.
 
 ## Konfigurácia
 
